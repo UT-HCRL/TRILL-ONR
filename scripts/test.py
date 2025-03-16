@@ -123,7 +123,8 @@ def main(gui, env_type, cam_name="upview", subtask=0, save_video=False):
         action["trajectory"]["right_quat"] = geom.rot_to_quat(rh_target_rot)
         action["trajectory"]["left_quat"] = geom.rot_to_quat(lh_target_rot)
 
-        env.step(action)
+        obs = env.step(action)
+        print(obs['sensor'])
 
         if env.cur_time > 24.0:
             done = True

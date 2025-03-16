@@ -71,7 +71,6 @@ class BaseEnv:
             self._init_control()
             self.sim.step()
             self._cur_sim_time += SIM_TIME
-            # self._render()
 
         self._update_obs()
 

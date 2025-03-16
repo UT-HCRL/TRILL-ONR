@@ -2,6 +2,7 @@ import numpy as np
 from robosuite.models.arenas import EmptyArena
 
 from simulator.objects import DoorObject, WallObject
+from simulator.col_checker import ContactSensor
 from util import geom
 from .base import BaseEnv
 
@@ -138,3 +139,19 @@ class DoorEnv(BaseEnv):
     @property
     def door_angle(self):
         return self._get_door_angle()
+
+
+    def _reset_robot(self, initial_pos, **kwargs):
+        super()._reset_robot(initial_pos=initial_pos, **kwargs)
+        self.contact_sensors = {
+            'left_contact': ContactSensor(self.sim , robot={'left_gripper': self.grippers['left']}, objects={'door': self.door, **self.walls}),
+            'right_contact': ContactSensor(self.sim , robot={'right_gripper': self.grippers['right']}, objects={'door': self.door, **self.walls}),
+            'bimanual_contact_door': ContactSensor(self.sim , robot=self.grippers, objects={'door': self.door}),
+            }
+
+    def _update_obs(self):
+        super()._update_obs()
+        self._cur_obs["contact_sensor"] = self._read_contact_sensors()
+
+    def _read_contact_sensors(self):        
+        return {key: sensor.get_state() for key, sensor in self.contact_sensors.items()}
