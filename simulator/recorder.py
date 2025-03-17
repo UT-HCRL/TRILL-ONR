@@ -5,7 +5,6 @@ import os
 import h5py
 import numpy as np
 import yaml
-from tensorboardX import SummaryWriter
 
 from .envs import SIM_TIME, RENDER_TIME, INIT_TIME, TELEOP_TIME
 
@@ -201,65 +200,6 @@ class Player:
 
         self._mode = mode
         self._load_data(file_path)
-
-    def plot(self):
-        writer = SummaryWriter()
-        for sensor_line, control_line in zip(
-            self._wbc_sensor_data, self._wbc_control_data
-        ):
-            sensor_dict = json.loads(sensor_line)
-            control_dict = json.loads(control_line)
-
-            assert sensor_dict["time_stamp"] == control_dict["time_stamp"]
-            time_stamp = int(1000 * control_dict["time_stamp"])
-
-            for data in ["joint_pos", "joint_vel"]:
-                for key in control_dict[data].keys():
-                    writer.add_scalar(
-                        "{}_error/{}".format(data, key),
-                        control_dict[data][key] - sensor_dict[data][key],
-                        time_stamp,
-                    )
-                    writer.add_scalar(
-                        "{}_command/{}".format(data, key),
-                        control_dict[data][key],
-                        time_stamp,
-                    )
-                    writer.add_scalar(
-                        "{}_sensor/{}".format(data, key),
-                        sensor_dict[data][key],
-                        time_stamp,
-                    )
-
-            for key in control_dict["joint_trq"].keys():
-                writer.add_scalar(
-                    "joint_trq_command/{}".format(key),
-                    control_dict["joint_pos"][key],
-                    time_stamp,
-                )
-
-            reaction_force = control_dict["reaction_force"]
-            for idx, key in enumerate(
-                [
-                    "left_lin_x",
-                    "left_lin_y",
-                    "left_lin_z",
-                    "left_ang_x",
-                    "left_ang_y",
-                    "left_ang_z",
-                    "right_lin_x",
-                    "right_lin_y",
-                    "right_lin_z",
-                    "right_ang_x",
-                    "right_ang_y",
-                    "right_ang_z",
-                ]
-            ):
-                writer.add_scalar(
-                    "reaction_force_command/{}".format(key),
-                    reaction_force[idx],
-                    time_stamp,
-                )
 
     def reset(self):
         self._demo_count = 0

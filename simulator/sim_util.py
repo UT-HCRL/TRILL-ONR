@@ -6,8 +6,73 @@ import numpy as np
 from util import geom, liegroup
 
 
+def get_sim_info(sim):
+    model, data = get_mujoco_objects(sim)
+    joint_info = {}
+    mesh_info = {}
+
+    for i in range(sim.model.njnt):
+        joint_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, i)
+        joint_info[joint_name] = i
+
+    # get mesh info
+    for i in range(sim.model.nmesh):
+        mesh_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_MESH, i)
+        mesh_info[mesh_name] = i
+
+    init_qpos = np.copy(data.qpos).tolist()
+    
+    geom_xpos = np.copy(data.geom_xpos).tolist()
+    geom_xquat = geom.rot_to_quat(np.copy(data.geom_xmat).reshape(-1, 3, 3)).tolist()
+    geom_xpose = [geom_xpos[i] + geom_xquat[i] for i in range(len(geom_xpos))]
+
+    mesh_pos = np.copy(model.mesh_pos).tolist()
+    mesh_quat = np.array(model.mesh_quat)
+    # convert from wxyz to xyzw
+    mesh_quat = mesh_quat[:, [1, 2, 3, 0]]
+    mesh_quat = mesh_quat.tolist()
+    mesh_pose = [mesh_pos[i] + mesh_quat[i] for i in range(len(mesh_pos))]
+
+    return {
+        "joint_ids": joint_info,
+        "mesh_ids": mesh_info,
+        "init_qpos": init_qpos,
+        "init_geom_xpose": geom_xpose,
+        "mesh_pose": mesh_pose,
+    }
+
+
 def get_mujoco_objects(sim):
     return sim.model._model, sim.data._data
+
+
+def get_col_geom(sim, object, group=0):
+
+    model, data = get_mujoco_objects(sim)
+    geom_info = {}
+
+    for i in range(sim.model.ngeom):
+        key = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, i)
+        if key.startswith(object.naming_prefix) and sim.model.geom(key).group == group:
+            geom_info[key] = i
+
+    return geom_info
+
+
+def check_col_state(sim, geom_info_1, geom_info_2):
+
+    model, data = get_mujoco_objects(sim)
+    col_state = False
+    col_info = []
+    sim.forward()
+
+    for contact in data.contact:
+        if (contact.geom1 in geom_info_1.values()) and (contact.geom2 in geom_info_2.values()) or\
+           (contact.geom1 in geom_info_2.values()) and (contact.geom2 in geom_info_1.values()):
+            col_state = True
+            col_info.append((contact.geom1, contact.geom2))
+
+    return col_state, col_info
 
 
 def get_link_iso(sim, robot, link_name):
