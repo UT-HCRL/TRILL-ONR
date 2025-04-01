@@ -1,0 +1,174 @@
+
+        <mujoco model="combined">
+            <compiler angle="radian"/>
+            <include file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/models/base.xml"/>
+            <mujoco model="ShipScene">
+<default>
+<default class="visual">
+<geom group="2" type="mesh" contype="0" conaffinity="0"/>
+</default>
+<default class="collision">
+<geom group="3" type="mesh"/>
+</default>
+</default>
+<asset>
+<material name="Box_Material" specular="0.5" shininess="0.2" rgba="0.905660 0.276824 0.276824 1.000000"/>
+<texture type="2d" name="device1_basecolor" file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/device1_basecolor.png"/>
+<material name="Device1" texture="device1_basecolor" specular="0.5" shininess="0.2"/>
+<texture type="2d" name="device4_basecolor" file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/device4_basecolor.png"/>
+<material name="Device4" texture="device4_basecolor" specular="0.5" shininess="0.2"/>
+<texture type="2d" name="engine_basecolor" file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/engine_basecolor.png"/>
+<material name="Engine" texture="engine_basecolor" specular="0.5" shininess="0.2"/>
+<material name="Floor1" specular="0.5" shininess="0.2" rgba="1.000000 0.939428 0.636792 1.000000"/>
+<texture type="2d" name="T_Room_01_BC 1" file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/T_Room_01_BC 1.png"/>
+<material name="M_Room_01" texture="T_Room_01_BC 1" specular="0.5" shininess="0.2"/>
+<texture type="2d" name="oxygen_basecolor" file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/oxygen_basecolor.png"/>
+<material name="Oxygen" texture="oxygen_basecolor" specular="0.5" shininess="0.2"/>
+<material name="ShipControl" specular="0.5" shininess="0.2" rgba="0.858491 0.858491 0.858491 1.000000"/>
+<material name="UpperDeck_Walls" specular="0.5" shininess="0.2" rgba="0.811321 0.811321 0.811321 1.000000"/>
+<material name="dark" specular="0.5" shininess="0.2" rgba="0.120154 0.120154 0.120154 1.000000"/>
+<material name="floor" specular="0.5" shininess="0.2" rgba="0.255981 0.255981 0.255981 1.000000"/>
+<material name="plain" specular="0.5" shininess="0.2" rgba="1.000000 1.000000 1.000000 1.000000"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_0.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_1.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_2.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_3.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_4.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_5.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_6.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_7.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_8.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_9.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_10.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_11.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_0.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_1.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_2.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_3.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_4.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_5.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_6.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_7.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_8.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_9.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_10.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_11.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_12.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_13.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_14.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_15.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_16.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_17.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_18.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_19.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_20.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_21.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_22.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_23.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_24.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_25.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_26.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_27.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_28.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_29.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_30.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_31.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_32.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_33.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_34.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_35.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_36.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_37.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_38.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_39.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_40.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_41.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_42.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_43.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_44.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_45.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_46.obj"/>
+<mesh file="/home/sanjayovs/Desktop/1_Projects/TRILL-ONR/simulator/envs/../../custom_env/ShipScene/ShipScene/ShipScene/ShipScene_collision_47.obj"/>
+</asset>
+<worldbody>
+
+
+
+<!-- Closer main spotlight with boundaries in mind -->
+
+
+
+
+
+
+<!-- Super bright ambient light -->
+<!-- <light name="ambient" directional="false" diffuse="10 10 10" specular="1.5 1.5 1.5" pos="0 0 500"/> -->
+
+
+<body name="ShipScene">
+<geom mesh="ShipScene_0" material="floor" class="visual"/>
+<geom mesh="ShipScene_1" material="M_Room_01" class="visual"/>
+<geom mesh="ShipScene_2" material="ShipControl" class="visual"/>
+<geom mesh="ShipScene_3" material="dark" class="visual"/>
+<geom mesh="ShipScene_4" material="plain" class="visual"/>
+<geom mesh="ShipScene_5" material="Engine" class="visual"/>
+<geom mesh="ShipScene_6" material="Oxygen" class="visual"/>
+<geom mesh="ShipScene_7" material="Floor1" class="visual"/>
+<geom mesh="ShipScene_8" material="Box_Material" class="visual"/>
+<geom mesh="ShipScene_9" material="Device4" class="visual"/>
+<geom mesh="ShipScene_10" material="Device1" class="visual"/>
+<geom mesh="ShipScene_11" material="UpperDeck_Walls" class="visual"/>
+<geom mesh="ShipScene_collision_0" rgba="0.6582234501900802 0.5130188191176454 0.06476388893231488 1" class="collision"/>
+<geom mesh="ShipScene_collision_1" rgba="0.14686044117446118 0.46158242871460675 0.15026935402731578 1" class="collision"/>
+<geom mesh="ShipScene_collision_2" rgba="0.5638852571294272 0.25042981567926115 0.1683729957045459 1" class="collision"/>
+<geom mesh="ShipScene_collision_3" rgba="0.33947805569395606 0.9899095029301579 0.6917408150049503 1" class="collision"/>
+<geom mesh="ShipScene_collision_4" rgba="0.8458600631046397 0.6683509286161998 0.7511027804335986 1" class="collision"/>
+<geom mesh="ShipScene_collision_5" rgba="0.8867435487410411 0.4955884218692366 0.24900928272448486 1" class="collision"/>
+<geom mesh="ShipScene_collision_6" rgba="0.10046743241018163 0.6027564112711044 0.2304683288707986 1" class="collision"/>
+<geom mesh="ShipScene_collision_7" rgba="0.4238504810094018 0.9932852418280963 0.30333332785105405 1" class="collision"/>
+<geom mesh="ShipScene_collision_8" rgba="0.714513712224071 0.3329315798182152 0.3724317562462408 1" class="collision"/>
+<geom mesh="ShipScene_collision_9" rgba="0.150418477076242 0.02266852368091765 0.25441847097954096 1" class="collision"/>
+<geom mesh="ShipScene_collision_10" rgba="0.223846131746667 0.7250063521804084 0.03844834475263903 1" class="collision"/>
+<geom mesh="ShipScene_collision_11" rgba="0.599600772957523 0.9647399289945203 0.7451567407834194 1" class="collision"/>
+<geom mesh="ShipScene_collision_12" rgba="0.058329118159302196 0.004517273010774425 0.6484551429875977 1" class="collision"/>
+<geom mesh="ShipScene_collision_13" rgba="0.27817237798183647 0.9657203424984577 0.5269956009523108 1" class="collision"/>
+<geom mesh="ShipScene_collision_14" rgba="0.4551525058492588 0.4572010492695685 0.32931007799895706 1" class="collision"/>
+<geom mesh="ShipScene_collision_15" rgba="0.4572660605129347 0.038602981781091894 0.1393129614856563 1" class="collision"/>
+<geom mesh="ShipScene_collision_16" rgba="0.019150337172020415 0.022278443469865405 0.03396467914836687 1" class="collision"/>
+<geom mesh="ShipScene_collision_17" rgba="0.7691321953790801 0.2922360487571368 0.08391708058007519 1" class="collision"/>
+<geom mesh="ShipScene_collision_18" rgba="0.30292307891604164 0.6054110917694467 0.2893601593508668 1" class="collision"/>
+<geom mesh="ShipScene_collision_19" rgba="0.48299880881126533 0.6015889108836712 0.008575005713784667 1" class="collision"/>
+<geom mesh="ShipScene_collision_20" rgba="0.07838866637579112 0.6734004060137161 0.6322247057235211 1" class="collision"/>
+<geom mesh="ShipScene_collision_21" rgba="0.8642617537852009 0.655409223302369 0.5142186916907125 1" class="collision"/>
+<geom mesh="ShipScene_collision_22" rgba="0.1732537569071736 0.01502942002531793 0.12627669804027508 1" class="collision"/>
+<geom mesh="ShipScene_collision_23" rgba="0.9328638299153834 0.05461924625811332 0.18096367697392557 1" class="collision"/>
+<geom mesh="ShipScene_collision_24" rgba="0.3325834876652334 0.473608728602523 0.605836242573455 1" class="collision"/>
+<geom mesh="ShipScene_collision_25" rgba="0.7791719203964 0.7768317461143247 0.5891473441300611 1" class="collision"/>
+<geom mesh="ShipScene_collision_26" rgba="0.9750966728085454 0.3248724911676457 0.9820680382501693 1" class="collision"/>
+<geom mesh="ShipScene_collision_27" rgba="0.5830162005543819 0.824900864878665 0.23558506633796938 1" class="collision"/>
+<geom mesh="ShipScene_collision_28" rgba="0.08736773717712287 0.423375345008452 0.8356648218726784 1" class="collision"/>
+<geom mesh="ShipScene_collision_29" rgba="0.17357799638397664 0.5828213851428843 0.127603585938593 1" class="collision"/>
+<geom mesh="ShipScene_collision_30" rgba="0.566217920125141 0.47890001135661886 0.984278484753354 1" class="collision"/>
+<geom mesh="ShipScene_collision_31" rgba="0.40273045427335397 0.8163210728172922 0.3654611522406507 1" class="collision"/>
+<geom mesh="ShipScene_collision_32" rgba="0.0586825316176266 0.15879273804363014 0.7484591360398961 1" class="collision"/>
+<geom mesh="ShipScene_collision_33" rgba="0.719528289252114 0.7660488845104021 0.26073960535553575 1" class="collision"/>
+<geom mesh="ShipScene_collision_34" rgba="0.22842517279801933 0.21705638972848207 0.5020921260637359 1" class="collision"/>
+<geom mesh="ShipScene_collision_35" rgba="0.37351238692924793 0.745809330961279 0.6075819213351096 1" class="collision"/>
+<geom mesh="ShipScene_collision_36" rgba="0.62646275320587 0.022086400903503667 0.5978886552393191 1" class="collision"/>
+<geom mesh="ShipScene_collision_37" rgba="0.3047147154226484 0.2880319024471101 0.5916033476198295 1" class="collision"/>
+<geom mesh="ShipScene_collision_38" rgba="0.6920768918074602 0.4027331056846747 0.01997755373451293 1" class="collision"/>
+<geom mesh="ShipScene_collision_39" rgba="0.6332257793184259 0.9655696207279809 0.6228163883209874 1" class="collision"/>
+<geom mesh="ShipScene_collision_40" rgba="0.6960044372140033 0.8477945408121211 0.9308635829644594 1" class="collision"/>
+<geom mesh="ShipScene_collision_41" rgba="0.6792476369150441 0.3141803667175007 0.10170686106816151 1" class="collision"/>
+<geom mesh="ShipScene_collision_42" rgba="0.7598173517609158 0.9038174545302073 0.954775910204729 1" class="collision"/>
+<geom mesh="ShipScene_collision_43" rgba="0.4595783048879172 0.19789861570432088 0.5937897422759709 1" class="collision"/>
+<geom mesh="ShipScene_collision_44" rgba="0.13399777226327447 0.030096513808423264 0.13889126887191616 1" class="collision"/>
+<geom mesh="ShipScene_collision_45" rgba="0.33018333539808165 0.6678513941262147 0.6404754588991243 1" class="collision"/>
+<geom mesh="ShipScene_collision_46" rgba="0.05209185641224001 0.9616908154094029 0.23041577701707472 1" class="collision"/>
+<geom mesh="ShipScene_collision_47" rgba="0.6019759791214018 0.6505323245339096 0.5127420841212887 1" class="collision"/>
+</body>
+</worldbody>
+</mujoco>
+
+        </mujoco>
+        
