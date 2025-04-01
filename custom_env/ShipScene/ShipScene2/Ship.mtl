@@ -1,0 +1,297 @@
+# Blender 4.3.2 MTL File: 'None'
+# www.blender.org
+
+newmtl Base_metal
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/Base_metal.png
+map_d /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/Base_metal.png
+
+newmtl Brass-Matte1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.820755 0.676179 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Brass_-_Matte
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.952941 0.796078 0.486275
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Compressor
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/compressor_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/compressor_normal.png
+
+newmtl ControlboardDetailed
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Diffuse.tga
+map_Ks /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Specular.tga
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Normal.tga
+
+newmtl DeckDetailed
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Diffuse.tga
+map_Ks /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_23_Specular.tga
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_23_Normal.tga
+
+newmtl Device1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device1_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device1_normal.png
+
+newmtl Device4
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device4_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device4_normal.png
+
+newmtl Engine
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/engine_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/engine_normal.png
+
+newmtl LowerDeck_Walls
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.811321 0.811321 0.811321
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl M_Room_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Environment/Objects_NoProperties/AssociatedArt_DontDelete/Art/Textures/T_Room_01_BC 1.png
+
+newmtl Oxygen
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/oxygen_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/oxygen_normal.png
+
+newmtl ShipControl
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.858491 0.858491 0.858491
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Stainless_Steel_-_Polished
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.796078 0.796078 0.796078
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl SwitchboardDetailed
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Diffuse.tga
+map_Ks /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Specular.tga
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/YughuesFreeMetalMaterials/Materials/Textures/T_30_Normal.tga
+
+newmtl ThermostatBody1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.311321 0.311321 0.311321
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl ThermostatBody_4
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.367925 0.056851
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Thermostat_Body_2
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.556604 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Thermostat_Body_3
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.174627 0.943396
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl UpperDeck_Walls
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.811321 0.811321 0.811321
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl chair_table_aluminum_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/chair_table_aluminum_a_01/chair_table_aluminum_a_01_diff.tif
+
+newmtl drain_mat_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/drain_mat_a_01/drain_mat_a_01_diff.tif
+map_d /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/drain_mat_a_01/drain_mat_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/drain_mat_a_01/drain_mat_a_01_norm.tif
+
+newmtl electric_generator_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/electric_generator_a_01/electric_generator_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/electric_generator_a_01/electric_generator_a_01_norm.tif
+
+newmtl fire_extinguisher_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/fire_extinguisher_a_01/fire_extinguisher_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/fire_extinguisher_a_01/fire_extinguisher_a_01_norm.tif
+
+newmtl pipe_insulated_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/pipe_insulated_a_01/pipe_insulated_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/pipe_insulated_a_01/pipe_insulated_a_01_norm.tif
+
+newmtl pipe_insulated_b_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/pipe_insulated_b_01/pipe_insulated_b_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/pipe_insulated_b_01/pipe_insulated_b_01_norm.tif
+
+newmtl shelving_metal_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/shelving_metal_a_01/shelving_metal_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/shelving_metal_a_01/shelving_metal_a_01_norm.tif
+
+newmtl step_ladder_a_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/step_ladder_a_01/step_ladder_a_01_diff.tif
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/HQ PBR/HQ Warehouse Kit/Materials/step_ladder_a_01/step_ladder_a_01_norm.tif
