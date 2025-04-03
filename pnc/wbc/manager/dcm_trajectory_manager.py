@@ -8,6 +8,7 @@ from scipy.spatial.transform import Rotation as R
 
 from pnc.dcm.footstep import Footstep
 from pnc.dcm.footstep import interpolate
+from util import geom
 
 
 class DCMTransferType(object):
@@ -223,8 +224,13 @@ class DCMTrajectoryManager(object):
         self._reset_idx_and_clear_footstep_list()
         self._update_starting_stance()
         curr_x = self._mf_stance.iso[0, 3]
-        nstep = int(np.abs(goal_x - curr_x) // self._nominal_forward_step)
+        nstep = int((goal_x - curr_x) // self._nominal_forward_step)
         xlen = (goal_x - curr_x) / nstep
+        # see if these are steps forward or backwards
+        curr_rpy = geom.rot_to_euler(self._mf_stance.rot)
+        if curr_rpy[2] < 0:
+            nstep *= -1
+        print(f"Scheduled to take {nstep} steps of length {xlen} to go from {curr_x} to {goal_x}")
         self._populate_walk_forward(nstep, xlen)
         self._alternate_leg()
 

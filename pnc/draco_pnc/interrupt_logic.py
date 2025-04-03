@@ -18,7 +18,7 @@ class DracoManipulationInterruptLogic(InterruptLogic):
         self._rh_waypoint_pos = np.array([0.0, 0.0, 0.0])
         self._rh_target_quat = np.array([0.0, 0.0, 0.0, 1.0])
 
-        self._com_displacement_x = 0.0
+        self._com_displacement_x = 3.0
         self._com_displacement_y = 0.0
 
         self._b_walk_in_progress = False

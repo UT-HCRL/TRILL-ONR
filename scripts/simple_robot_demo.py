@@ -199,6 +199,9 @@ def main(gui=1, save_video=False):
             locomotion_mode = 5  # turn_left
         elif 'e' in pressed_keys:
             locomotion_mode = 6  # turn_right
+            print(f"Pressed {pressed_keys}")
+        elif 'x' in pressed_keys:
+            locomotion_mode = 8  # walk_in_x
         elif 'g' in pressed_keys:
             gripper_state = 1 - gripper_state  # Toggle between 0 and 1
             gripper_start_time = env.cur_time

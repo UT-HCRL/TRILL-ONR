@@ -63,6 +63,7 @@ Action:
       5: turning_left
       6: turning_right
       7: balance
+      8: walk_in_x
     aux:
       neck:
         0: forward
