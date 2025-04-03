@@ -139,21 +139,21 @@ Aux Control:
 
 
 Whole-Body Contol:
-  RF Z Max: 1000.0
+  RF Z Max: 500.0
 
   # Task Hierarchy Weights
   Hierarchy:
-    COM: 20.0
-    CAM: 2.0
+    COM: 80.0
+    CAM: 0.0
     # CAM: 0.0
     Torso: 40.0
-    Upper Body: 0.1
+    Upper Body: 30
     Hand Pos Min: 2.0e-0
     Hand Pos Max: 10.0e-0
     Hand Quat Min: 2.0e-0
     Hand Quat Max: 10.0e-0
-    Contact Foot: 60.0
-    Swing Foot: 40.0
+    Contact Foot: 40.0
+    Swing Foot: 60.0
 
   # Task Gains
   kp:
@@ -170,19 +170,19 @@ Whole-Body Contol:
       - 100.0
       - 100.0
     Upper Body:
-      - 20.0
-      - 50.0
-      - 50.0
-      - 50.0
-      - 25.0
-      - 20.0
-      - 20.0
-      - 50.0
-      - 50.0
-      - 50.0
-      - 25.0
-      - 20.0
-      - 20.0
+      - 20.0      # neck
+      - 120.0     # l_shoulder_fe
+      - 80.0      # l_shoulder_aa
+      - 80.0      # l_shoulder_ie
+      - 50.0      # l_elbow_fe
+      - 30.0      # l_wrist_ps
+      - 50.0      # l_wrist_pitch
+      - 120.0     # r_shoulder_fe
+      - 80.0      # r_shoulder_aa
+      - 80.0      # r_shoulder_ie
+      - 50.0      # r_elbow_fe
+      - 30.0      # r_wrist_ps
+      - 50.0      # r_wrist_pitch
     Hand Pos:
       - 400.0
       - 400.0
@@ -192,9 +192,9 @@ Whole-Body Contol:
       - 250.0
       - 250.0
     Foot Pos:
-      - 300.0
-      - 300.0
-      - 300.0
+      - 400.0
+      - 400.0
+      - 400.0
     Foot Quat:
       - 300.0
       - 300.0
@@ -202,8 +202,8 @@ Whole-Body Contol:
 
   kd:
     COM:
-      - 20.0
-      - 20.0
+      - 80.0
+      - 80.0
       - 20.0
     CAM:
       # - 0.0
@@ -217,19 +217,19 @@ Whole-Body Contol:
       - 10.0
       - 10.0
     Upper Body:
-      - 8.0
-      - 20.0
-      - 20.0
-      - 20.0
-      - 12.0
-      - 8.0
-      - 8.0
-      - 20.0
-      - 20.0
-      - 20.0
-      - 12.0
-      - 8.0
-      - 8.0
+      - 8.0     # neck
+      - 10.0    # l_shoulder_fe
+      - 10.0    # l_shoulder_aa
+      - 10.0    # l_shoulder_ie
+      - 8.0     # l_elbow_fe
+      - 2.0     # l_wrist_ps
+      - 4.0     # l_wrist_pitch
+      - 10.0    # r_shoulder_fe
+      - 10.0    # r_shoulder_aa
+      - 10.0    # r_shoulder_ie
+      - 8.0     # r_elbow_fe
+      - 2.0     # r_wrist_ps
+      - 4.0     # r_wrist_pitch
     Hand Pos:
       - 60.0
       - 60.0
@@ -239,18 +239,18 @@ Whole-Body Contol:
       - 10.0
       - 10.0
     Foot Pos:
-      - 30.0
-      - 30.0
-      - 30.0
+      - 60.0
+      - 60.0
+      - 60.0
     Foot Quat:
-      - 30.0
-      - 30.0
-      - 30.0
+      - 50.0
+      - 50.0
+      - 50.0
 
   # Regularization terms
   Reguralization:
     Q ddot: 1.0e-8
-    RF: 1.0e-7
+    RF: 1.0e-4
 
   Use Torque Limit: false
 
@@ -269,8 +269,8 @@ Walking:
     Initial Stand: 0.1
     Additional Inititial Transfer: 0.  # sec
     Contact Trans: 1.0
-    Swing: 1.0
-    RF Z Max: 0.05
+    Swing: 0.6
+    RF Z Max: 0.1
 
   Percentage Settle: 0.9
   Alpha DS: 0.5

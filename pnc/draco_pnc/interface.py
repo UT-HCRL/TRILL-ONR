@@ -36,6 +36,9 @@ class DracoManipulationInterface(Interface):
             self._data_saver.add("joint_pos_limit", self._robot.joint_pos_limit)
             self._data_saver.add("joint_vel_limit", self._robot.joint_vel_limit)
             self._data_saver.add("joint_trq_limit", self._robot.joint_trq_limit)
+            self._data_saver.add("b_rf_contact", self._sp.b_rf_contact)
+            self._data_saver.add("b_lf_contact", self._sp.b_lf_contact)
+
 
     def get_command(self, sensor_data):
         if self._config["Simulation"]["Save Data"]:
@@ -58,6 +61,7 @@ class DracoManipulationInterface(Interface):
         ):
             self._data_saver.add("joint_pos", self._robot.joint_positions)
             self._data_saver.add("joint_vel", self._robot.joint_velocities)
+            self._data_saver.add("est_icp", self._sp.dcm[:2])
             self._data_saver.advance()
 
         # Increase time variables

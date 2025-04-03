@@ -158,6 +158,7 @@ class DCMTrajectoryManager(object):
         # Ref Trajectory
         com_pos_ref = np.zeros((n_eval, 3))
         com_vel_ref = np.zeros((n_eval, 3))
+        dcm_pos_ref = np.zeros((n_eval, 3))
         base_ori_ref = np.zeros((n_eval, 4))
         t_traj = np.zeros((n_eval, 1))
 
@@ -166,12 +167,14 @@ class DCMTrajectoryManager(object):
             t_traj[i, 0] = t
             com_pos_ref[i, :] = self._dcm_planner.compute_reference_com_pos(t)
             com_vel_ref[i, :] = self._dcm_planner.compute_reference_com_vel(t)
+            dcm_pos_ref[i, :] = self._dcm_planner._compute_ref_dcm(t)
             base_ori_ref[i, :], _, _ = self._dcm_planner.compute_reference_base_ori(t)
             t += t_step
 
         data["reference"] = dict()
         data["reference"]["com_pos"] = com_pos_ref
         data["reference"]["com_vel"] = com_vel_ref
+        data["reference"]["dcm_pos"] = dcm_pos_ref
         data["reference"]["base_ori"] = base_ori_ref
         data["reference"]["time"] = t_traj
 
