@@ -1,3 +1,4 @@
+import numpy as np
 from pnc.dcm import Footstep
 from pnc.draco_pnc.state_machine import LocomanipulationState
 from pnc.draco_pnc.state_provider import DracoManipulationStateProvider
@@ -11,6 +12,8 @@ class ContactTransitionEnd(StateMachine):
         self._hierarchy_managers = hm
         self._force_managers = fm
         self._leg_side = leg_side
+        self._nominal_lfoot_iso = np.eye(4)
+        self._nominal_rfoot_iso = np.eye(4)
         self._sp = DracoManipulationStateProvider(robot)
         self._start_time = 0.0
 
@@ -21,6 +24,8 @@ class ContactTransitionEnd(StateMachine):
             print("[LocomanipulationState] LeftLeg ContactTransitionEnd")
         self._start_time = self._sp.curr_time
         self._end_time = self._trajectory_managers["dcm"].compute_rf_z_ramp_down_time()
+        self._nominal_lfoot_iso = self._robot.get_link_iso("l_foot_contact")
+        self._nominal_rfoot_iso = self._robot.get_link_iso("r_foot_contact")
 
         if self._leg_side == Footstep.LEFT_SIDE:
             self._force_managers["lfoot"].initialize_ramp_to_min(
@@ -67,8 +72,10 @@ class ContactTransitionEnd(StateMachine):
         )
 
         # Update foot task
-        self._trajectory_managers["lfoot"].use_current()
-        self._trajectory_managers["rfoot"].use_current()
+        self._trajectory_managers["lfoot"].use_nominal(self._nominal_lfoot_iso)
+        self._trajectory_managers["rfoot"].use_nominal(self._nominal_rfoot_iso)
+        # self._trajectory_managers["lfoot"].use_current()
+        # self._trajectory_managers["rfoot"].use_current()
 
     def last_visit(self):
         pass

@@ -1,3 +1,4 @@
+import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 from pnc.dcm import Footstep
@@ -14,6 +15,8 @@ class ContactTransitionStart(StateMachine):
         self._hierarchy_managers = hm
         self._force_managers = fm
         self._leg_side = leg_side
+        self._nominal_lfoot_iso = np.eye(4)
+        self._nominal_rfoot_iso = np.eye(4)
         self._sp = DracoManipulationStateProvider(robot)
         self._start_time = 0.0
         self._planning_id = 0
@@ -24,6 +27,8 @@ class ContactTransitionStart(StateMachine):
         else:
             print("[LocomanipulationState] LeftLeg ContactTransitionStart")
         self._start_time = self._sp.curr_time
+        self._nominal_lfoot_iso = self._robot.get_link_iso("l_foot_contact")
+        self._nominal_rfoot_iso = self._robot.get_link_iso("r_foot_contact")
 
         # Initialize Reaction Force Ramp to Max
         for fm in self._force_managers.values():
@@ -101,8 +106,10 @@ class ContactTransitionStart(StateMachine):
         )
 
         # Update foot task
-        self._trajectory_managers["lfoot"].use_current()
-        self._trajectory_managers["rfoot"].use_current()
+        self._trajectory_managers["lfoot"].use_nominal(self._nominal_lfoot_iso)
+        self._trajectory_managers["rfoot"].use_nominal(self._nominal_rfoot_iso)
+        # self._trajectory_managers["lfoot"].use_current()
+        # self._trajectory_managers["rfoot"].use_current()
 
         # self._trajectory_managers["lhand"].use_current()
         # self._trajectory_managers["rhand"].use_current()

@@ -50,6 +50,20 @@ class FootTrajectoryManager(object):
         foot_ang_vel_des = foot_vel[0:3]
         self._ori_task.update_desired(foot_rot_des, foot_ang_vel_des, np.zeros(3))
 
+    def use_nominal(self, nominal_iso):
+        foot_pos_des = nominal_iso[:3, 3]
+
+        # FIXME for non-flat terrain
+        foot_pos_des[2] = 0     # assume zero height
+
+        self._pos_task.update_desired(foot_pos_des, np.zeros(3), np.zeros(3))
+
+        # FIXME for non-flat terrain
+        rpy = geom.rot_to_euler(nominal_iso[:3, :3])
+        foot_rot_des = geom.euler_to_rot([0, 0, rpy[2]])
+        foot_quat_des = geom.rot_to_quat(foot_rot_des)
+        self._ori_task.update_desired(foot_quat_des, np.zeros(3), np.zeros(3))
+
     def initialize_swing_foot_trajectory(
         self, start_time, swing_duration, landing_foot
     ):
@@ -88,15 +102,15 @@ class FootTrajectoryManager(object):
         s = (curr_time - self._swing_start_time) / self._swing_duration
 
         if s <= 0.5:
-            s = 2.0 * s
-            foot_pos_des = self._pos_traj_init_to_mid.evaluate(s)
-            foot_vel_des = self._pos_traj_init_to_mid.evaluate_first_derivative(s)
-            foot_acc_des = self._pos_traj_init_to_mid.evaluate_second_derivative(s)
+            mid_s = 2.0 * s
+            foot_pos_des = self._pos_traj_init_to_mid.evaluate(mid_s)
+            foot_vel_des = self._pos_traj_init_to_mid.evaluate_first_derivative(mid_s)
+            foot_acc_des = self._pos_traj_init_to_mid.evaluate_second_derivative(mid_s)
         else:
-            s = 2.0 * (s - 0.5)
-            foot_pos_des = self._pos_traj_mid_to_end.evaluate(s)
-            foot_vel_des = self._pos_traj_mid_to_end.evaluate_first_derivative(s)
-            foot_acc_des = self._pos_traj_mid_to_end.evaluate_second_derivative(s)
+            mid_s = 2.0 * (s - 0.5)
+            foot_pos_des = self._pos_traj_mid_to_end.evaluate(mid_s)
+            foot_vel_des = self._pos_traj_mid_to_end.evaluate_first_derivative(mid_s)
+            foot_acc_des = self._pos_traj_mid_to_end.evaluate_second_derivative(mid_s)
 
         foot_quat_des = self._quat_hermite_curve.evaluate(s)
         foot_ang_vel_des = self._quat_hermite_curve.evaluate_ang_vel(s)
