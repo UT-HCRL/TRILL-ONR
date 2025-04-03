@@ -247,14 +247,14 @@ class DCMTrajectoryManager(object):
         self._populate_step_in_place(1, self._robot_side)
         self._alternate_leg()
 
-    def walk_forward(self):
+    def walk_forward(self, n_steps=1):
         self._reset_idx_and_clear_footstep_list()
-        self._populate_walk_forward(1, self._nominal_forward_step)
+        self._populate_walk_forward(n_steps, self._nominal_forward_step)
         self._alternate_leg()
 
-    def walk_backward(self):
+    def walk_backward(self, n_steps=1):
         self._reset_idx_and_clear_footstep_list()
-        self._populate_walk_forward(1, self._nominal_backward_step)
+        self._populate_walk_forward(n_steps, self._nominal_backward_step)
         self._alternate_leg()
 
     def strafe_left(self):
