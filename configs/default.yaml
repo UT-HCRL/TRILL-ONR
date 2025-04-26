@@ -64,6 +64,7 @@ Action:
       6: turning_right
       7: balance
       8: walk_in_x
+      9: go_to_waypoints
     aux:
       neck:
         0: forward
@@ -283,8 +284,12 @@ Walking:
     Footwidth: 0.28
     Forward Step: 0.2
     Backward Step: -0.2
-    Trun Angle: 0.31416
+    Trun Angle: 0.5
     Strafe Distance: 0.10
+    Waypoints:
+      - [-1.2, 1.8]
+      - [-2.4, 0.6]
+      - [-3.6, -0.4]
 
 
 Manipulation:

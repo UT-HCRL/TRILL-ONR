@@ -6,6 +6,7 @@ import pickle
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
+import util.geom
 from pnc.dcm.footstep import Footstep
 from pnc.dcm.footstep import interpolate
 from util import geom
@@ -56,6 +57,7 @@ class DCMTrajectoryManager(object):
         self._nominal_backward_step = -0.25
         self._nominal_turn_radians = np.pi / 4.0
         self._nominal_strafe_distance = 0.125
+        self._waypoints_lst = None
 
         self._set_temporal_params()
 
@@ -242,6 +244,42 @@ class DCMTrajectoryManager(object):
         ylen = (goal_y - curr_y) / nstep
         self._populate_strafe(nstep, ylen)
 
+    def rotate_facing_next_waypoint(self):
+        # grab next waypoint
+        waypoint_xy = self.waypoints_lst[0]
+        curr_xy = self._robot._q[:2]
+        w_angle = np.arctan2(waypoint_xy[1] - curr_xy[1], waypoint_xy[0] - curr_xy[0])
+        w_torso_rpy = util.geom.quat_to_euler(self._robot._q[3:7])
+        b_angle = w_angle - w_torso_rpy[2]
+        n_turn_steps = max(abs(b_angle // self.nominal_turn_radians), 1)
+        des_angle_turns = b_angle / n_turn_steps
+        n_turn_steps = int(n_turn_steps)
+        print(f'Taking {n_turn_steps} rotation steps of {des_angle_turns:.3f} rad each.')
+        if des_angle_turns > 0:
+            self.turn_left(n_turn_steps, des_angle_turns)
+        if des_angle_turns < 0:
+            self.turn_right(n_turn_steps, des_angle_turns)
+
+    def move_fwd_to_next_waypoint(self):
+        # Note: this assumes the robot is already facing the next waypoint
+        waypoint_xy = self.waypoints_lst[0]
+
+        # if these are the first steps, take the current robot position
+        if len(self._footstep_list) == 0:
+            curr_xy = self._mf_stance.iso[:2, 3]
+        else:
+            curr_xy = self._footstep_list[-1].pos[:2]
+        dist_to_waypoint = np.linalg.norm(waypoint_xy - curr_xy)
+
+        n_fwd_steps = int(math.ceil(dist_to_waypoint / self._nominal_forward_step))
+        xlen = dist_to_waypoint / n_fwd_steps
+        print(f"Take {n_fwd_steps} steps of length {xlen:.4f} to travel {dist_to_waypoint:.4f} m")
+        self._populate_walk_forward(n_fwd_steps, xlen)
+        self._alternate_leg()
+        # debug
+        for i, fs in enumerate(self._footstep_list):
+            print(f"Footstep {i} with foot {fs.side} on position {fs.pos[:2]}")
+
     def walk_in_place(self):
         self._reset_idx_and_clear_footstep_list()
         self._populate_step_in_place(1, self._robot_side)
@@ -265,13 +303,21 @@ class DCMTrajectoryManager(object):
         self._reset_idx_and_clear_footstep_list()
         self._populate_strafe(1, -self._nominal_strafe_distance)
 
-    def turn_left(self):
+    def turn_left(self, n_turns=1, turn_rad=None):
+        if turn_rad is None:
+            turn_rad = self._nominal_turn_radians
         self._reset_idx_and_clear_footstep_list()
-        self._populate_turn(1, self._nominal_turn_radians)
+        self._populate_turn(n_turns, turn_rad)
 
-    def turn_right(self):
+    def turn_right(self, n_turns=1, turn_rad=None):
+        if turn_rad is None:
+            turn_rad = -self._nominal_turn_radians
         self._reset_idx_and_clear_footstep_list()
-        self._populate_turn(1, -self._nominal_turn_radians)
+        self._populate_turn(n_turns, turn_rad)
+
+    def clear_next_waypoint(self):
+        if len(self.waypoints_lst) > 0:
+            self.waypoints_lst.pop(0)
 
     def _populate_step_in_place(self, num_step, robot_side_first):
         self._update_starting_stance()
@@ -303,9 +349,15 @@ class DCMTrajectoryManager(object):
         self._update_starting_stance()
 
         new_stance = Footstep()
-        mf_stance = copy.deepcopy(self._mf_stance)
+        if len(self._footstep_list) > 0:
+            mf_stance = copy.deepcopy(self._footstep_list[-1])
+        else:
+            mf_stance = copy.deepcopy(self._mf_stance)
 
-        robot_side = Footstep.LEFT_SIDE
+        if mf_stance.side == Footstep.LEFT_SIDE:
+            robot_side = Footstep.RIGHT_SIDE
+        else:
+            robot_side = Footstep.LEFT_SIDE
         for i in range(num_steps):
             if robot_side == Footstep.LEFT_SIDE:
                 translate = np.array(
@@ -548,17 +600,17 @@ class DCMTrajectoryManager(object):
         self._nominal_strafe_distance = value
 
     @property
-    def nominal_turn_radians(self):
-        return self._nominal_turn_radians
-
-    @nominal_turn_radians.setter
-    def nominal_turn_radians(self, value):
-        self._nominal_turn_radians = value
-
-    @property
     def footstep_list(self):
         return self._footstep_list
 
     @property
     def curr_footstep_idx(self):
         return self._curr_footstep_idx
+
+    @property
+    def waypoints_lst(self):
+        return self._waypoints_lst
+
+    @waypoints_lst.setter
+    def waypoints_lst(self, value):
+        self._waypoints_lst = value

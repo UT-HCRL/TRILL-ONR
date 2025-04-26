@@ -33,6 +33,7 @@ class DracoManipulationInterruptLogic(InterruptLogic):
         self._walk_backward = False
         self._walk_in_x = False
         self._walk_in_y = False
+        self._go_to_waypoints = False
 
         self._strafe_left = False
         self._strafe_right = False
@@ -244,6 +245,24 @@ class DracoManipulationInterruptLogic(InterruptLogic):
                         LocomanipulationState.BALANCE
                     ].walking_trigger = True
                     self._walk_in_y = False
+
+                if self._go_to_waypoints:
+                    # if there are remaining waypoints available, re-plan
+                    if len(self._control_architecture.dcm_tm.waypoints_lst) > 0:
+                        # plan rotation steps
+                        self._control_architecture.dcm_tm.rotate_facing_next_waypoint()
+                        # then, move forward
+                        self._control_architecture.dcm_tm.move_fwd_to_next_waypoint()
+                        self._control_architecture.state_machine[
+                            LocomanipulationState.BALANCE
+                        ].walking_trigger = True
+
+                        # remove current waypoint and continue with the next one
+                        self._control_architecture.dcm_tm.clear_next_waypoint()
+                        self._go_to_waypoints = False
+                    else:
+                        # print(f'No remaining waypoints to go to. \nSend a new command')
+                        self._go_to_waypoints = False
 
                 if self._release:
                     self._control_architecture.state_machine[

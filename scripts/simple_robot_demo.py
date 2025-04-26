@@ -137,6 +137,7 @@ def main(gui=1, save_video=False):
     print("2: Wave")
     print("3: Reach")
     print("4: Squat")
+    print("Z: Go to waypoints")
     print("W: Walk forward")
     print("S: Stop walking/Balance mode")
     print("A: Strafe left")
@@ -202,6 +203,8 @@ def main(gui=1, save_video=False):
             print(f"Pressed {pressed_keys}")
         elif 'x' in pressed_keys:
             locomotion_mode = 8  # walk_in_x
+        elif 'z' in pressed_keys:
+            locomotion_mode = 9  # go to list of waypoints (in default.yaml)
         elif 'g' in pressed_keys:
             gripper_state = 1 - gripper_state  # Toggle between 0 and 1
             gripper_start_time = env.cur_time
