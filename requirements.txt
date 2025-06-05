@@ -15,4 +15,3 @@ robosuite==1.4.0
 gym
 wandb
 h5py
-torchaudio

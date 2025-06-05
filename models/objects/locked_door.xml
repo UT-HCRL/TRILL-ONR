@@ -34,6 +34,10 @@
                 group="0"
                 />
 
+
+            <body name="releasing_point" pos="-0.24 0.0 -0.15"/>
+            <site name="releasing_point" pos="-0.24 0.0 -0.15" size="0.05" rgba="0 0 1 1" />
+
             <body name="door" pos="0 0 0">
               <inertial pos="0 0 0" mass="0.1" diaginertia="0.01 0.015 0.006"/>
               <!-- Density 20 kg/m^3 -->
@@ -92,6 +96,12 @@
                   <site name="lock" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
               </body> -->
 
+
+              <!-- <body name="rotating_point" pos="-0.26 -0.1 -0.2"/>
+              <site name="rotating_point" pos="-0.26 -0.1 -0.2" size="0.05" rgba="0 0 1 1" /> -->
+              <body name="rotating_point" pos="-0.24 -0.1 -0.15"/>
+              <site name="rotating_point" pos="-0.24 -0.1 -0.15" size="0.05" rgba="0 0 1 1" />
+
               <body name="handle" pos="-0.35 0 -0.1">
                 <inertial pos="-0.017762 0 0" quat="0.365653 0.605347 -0.36522 0.605365" mass="0.1" diaginertia="0.0483771 0.0410001 0.0111013" />
                 <joint name="joint_handle" pos="0 0 0" axis="0 1 0" range="0 1.5708" limited="true" 
@@ -127,7 +137,9 @@
                   material="MatBright"
                   />
                   <!-- Don't render the door handle site by default -->
-                <site name="handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
+                <!-- <site name="handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" /> -->
+                <body name="grasping_point" pos="0.125 -0.1 0"/>
+                <!-- <site name="grasping_point" pos="0.125 -0.1 0" size="0.05" rgba="0 0 1 1" /> -->
               </body>
             </body>
           </body>

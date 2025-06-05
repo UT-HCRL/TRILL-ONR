@@ -152,6 +152,8 @@
             <body name="right_eef" pos="0 0 -0.053" quat="0 1 0 0">
                 <body name="right_mount" quat="-0.707107 0 0 0.707107"/>
                 <body name="right_hand" pos="0 0 -0.073"/>
+                <body name="right_grasping_point" pos="0 0 0.17"/>
+                <!-- <site name="right_grasping_point" pos="0 0 0.15" size="0.05" rgba="1 0 0 1" /> -->
             </body>
 
             </body>
@@ -223,6 +225,8 @@
             <body name="left_eef" pos="0 0 -0.053" quat="0 1 0 0">
                 <body name="left_mount" quat="0.707107 0 0 0.707107"/>
                 <body name="left_hand" pos="0 0 -0.073"/>
+                <body name="left_grasping_point" pos="0 0 0.17"/>
+                <!-- <site name="left_grasping_point" pos="0 0 0.15" size="0.05" rgba="1 0 0 1" /> -->
             </body>
 
             </body>

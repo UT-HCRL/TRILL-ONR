@@ -549,3 +549,76 @@ def transform_local_trajectory(sim, robot, global_trajectory):
     trajectory_data["rf_foot_quat"] = rf_foot_quat
 
     return trajectory_data
+
+
+            #   <body name="Door_handle" pos="-0.35 0 -0.1">
+              
+            #   <joint name="Door_hinge" pos="0.5 0 0" axis="0 0 -1" range="0.0 3.0" limited="true" damping="1" frictionloss="1" />
+            #     <joint name="Door_joint_handle" pos="0 0 0" axis="0 1 0" range="0 1.5708" limited="true" frictionloss="0.1" damping="0" stiffness="1.0" />
+            #     <site name="Door_handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
+
+
+def get_grasping_state(sim, robot, door):
+
+    model, data = get_mujoco_objects(sim)
+    grasping_data = OrderedDict()
+
+    base_com_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, robot.naming_prefix + "base_com"
+    )
+    left_grasping_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, robot.naming_prefix + "left_grasping_point"
+    )
+    right_grasping_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, robot.naming_prefix + "right_grasping_point"
+    )
+
+    base_com_pos = np.copy(data.xpos[base_com_id])
+    base_com_quat = np.copy(data.xquat[base_com_id][[1, 2, 3, 0]])
+
+    rot_world_basejoint = geom.quat_to_rot(base_com_quat)
+    lh_grasping_pos = np.dot(
+        rot_world_basejoint.transpose(), data.xpos[left_grasping_id] - base_com_pos
+    )
+    rh_grasping_pos = np.dot(
+        rot_world_basejoint.transpose(), data.xpos[right_grasping_id] - base_com_pos
+    )
+
+    lh_grasping_rot = np.dot(
+        rot_world_basejoint.transpose(),
+        geom.quat_to_rot(data.xquat[left_grasping_id][[1, 2, 3, 0]]),
+    )
+    rh_grasping_rot = np.dot(
+        rot_world_basejoint.transpose(),
+        geom.quat_to_rot(data.xquat[right_grasping_id][[1, 2, 3, 0]]),
+    )
+
+    lh_grasping_quat = geom.rot_to_quat(lh_grasping_rot)
+    rh_grasping_quat = geom.rot_to_quat(rh_grasping_rot)
+
+    grasping_data["base_com_pos"] = base_com_pos
+    grasping_data["base_com_quat"] = base_com_quat
+
+    grasping_data["lh_grasping_pos"] = lh_grasping_pos
+    grasping_data["rh_grasping_pos"] = rh_grasping_pos
+    grasping_data["lh_grasping_quat"] = lh_grasping_quat
+    grasping_data["rh_grasping_quat"] = rh_grasping_quat
+
+
+    for body_name in ['grasping', 'rotating', 'releasing']:
+        body_id = mujoco.mj_name2id(
+            model, mujoco.mjtObj.mjOBJ_XBODY, door.naming_prefix + f"{body_name}_point"
+        )
+        body_pos = np.dot(
+            rot_world_basejoint.transpose(), data.xpos[body_id] - base_com_pos
+        )
+        body_rot = np.dot(
+            rot_world_basejoint.transpose(),
+            geom.quat_to_rot(data.xquat[body_id][[1, 2, 3, 0]]),
+        )
+        body_quat = geom.rot_to_quat(body_rot)
+
+        grasping_data[f"latch_{body_name}_pos"] = body_pos
+        grasping_data[f"latch_{body_name}_quat"] = body_quat
+
+    return grasping_data
