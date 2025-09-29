@@ -58,6 +58,7 @@ class DCMTrajectoryManager(object):
         self._nominal_turn_radians = np.pi / 4.0
         self._nominal_strafe_distance = 0.125
         self._waypoints_lst = None
+        self._waypoints_back_lst = None
 
         self._set_temporal_params()
 
@@ -244,9 +245,14 @@ class DCMTrajectoryManager(object):
         ylen = (goal_y - curr_y) / nstep
         self._populate_strafe(nstep, ylen)
 
-    def rotate_facing_next_waypoint(self):
+    def rotate_facing_next_waypoint(self, destination='to'):
         # grab next waypoint
-        waypoint_xy = self.waypoints_lst[0]
+        if destination == 'to':
+            waypoint_xy = self.waypoints_lst[0]
+        elif destination == 'back':
+            waypoint_xy = self.waypoints_back_lst[0]
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when rotating to next waypoint")
         curr_xy = self._robot._q[:2]
         w_angle = np.arctan2(waypoint_xy[1] - curr_xy[1], waypoint_xy[0] - curr_xy[0])
         w_torso_rpy = util.geom.quat_to_euler(self._robot._q[3:7])
@@ -260,9 +266,14 @@ class DCMTrajectoryManager(object):
         if des_angle_turns < 0:
             self.turn_right(n_turn_steps, des_angle_turns)
 
-    def move_fwd_to_next_waypoint(self):
+    def move_fwd_to_next_waypoint(self, destination='to'):
         # Note: this assumes the robot is already facing the next waypoint
-        waypoint_xy = self.waypoints_lst[0]
+        if destination == 'to':
+            waypoint_xy = self.waypoints_lst[0]
+        elif destination == 'back':
+            waypoint_xy = self.waypoints_back_lst[0]
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when moving to next waypoint")
 
         # if these are the first steps, take the current robot position
         if len(self._footstep_list) == 0:
@@ -315,9 +326,15 @@ class DCMTrajectoryManager(object):
         self._reset_idx_and_clear_footstep_list()
         self._populate_turn(n_turns, turn_rad)
 
-    def clear_next_waypoint(self):
-        if len(self.waypoints_lst) > 0:
-            self.waypoints_lst.pop(0)
+    def clear_next_waypoint(self, destination='to'):
+        if destination == 'to':
+            if len(self.waypoints_lst) > 0:
+                self.waypoints_lst.pop(0)
+        elif destination == 'back':
+            if len(self.waypoints_back_lst) > 0:
+                self.waypoints_back_lst.pop(0)
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when clearing next waypoint")
 
     def _populate_step_in_place(self, num_step, robot_side_first):
         self._update_starting_stance()
@@ -614,3 +631,11 @@ class DCMTrajectoryManager(object):
     @waypoints_lst.setter
     def waypoints_lst(self, value):
         self._waypoints_lst = value
+
+    @property
+    def waypoints_back_lst(self):
+        return self._waypoints_back_lst
+
+    @waypoints_back_lst.setter
+    def waypoints_back_lst(self, value):
+        self._waypoints_back_lst = value

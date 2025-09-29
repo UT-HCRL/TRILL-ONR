@@ -111,6 +111,9 @@ class DracoManipulationControlArchitecture(ControlArchitecture):
         self._dcm_tm.waypoints_lst = walking_config["Initial Motion"][
             "Waypoints"
         ]
+        self._dcm_tm.waypoints_back_lst = walking_config["Initial Motion"][
+            "WaypointsBack"
+        ]
 
         self._trajectory_managers = {
             "rfoot": self._rfoot_tm,

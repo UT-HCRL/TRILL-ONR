@@ -106,6 +106,12 @@ def main(gui=1, save_video=False):
             'right_rot': geom.euler_to_rot(np.array([0, np.pi/4, 0])),
             'left_rot': geom.euler_to_rot(np.array([0, -np.pi/4, 0]))
         },
+        'pick_object': {
+            'right_pos': np.array([0.4, -0.2, -0.2]),
+            'left_pos': np.array([0.2, 0.2, 0.0]),
+            'right_rot': geom.euler_to_rot(np.array([-np.pi/2, 0, 0])),
+            'left_rot': geom.euler_to_rot(np.array([0, 0, 0]))
+        },
         'squat': {
             'right_pos': np.array([0.22, -0.25, -0.6]),  # Much lower position
             'left_pos': np.array([0.22, 0.25, -0.6]),   # Much lower position
@@ -119,7 +125,7 @@ def main(gui=1, save_video=False):
     current_pose_name = 'neutral'
     next_pose = poses['neutral']
     next_pose_name = 'neutral'
-    transition_duration = 1.5  # Increased duration for smoother transitions
+    transition_duration = 3  # Increased duration for smoother transitions
     action_start_time = env.cur_time
     current_time = 0
     phase = 0
@@ -137,7 +143,9 @@ def main(gui=1, save_video=False):
     print("2: Wave")
     print("3: Reach")
     print("4: Squat")
+    print("9: Reach Object")
     print("Z: Go to waypoints")
+    print("M: Go to waypoints back")
     print("W: Walk forward")
     print("S: Stop walking/Balance mode")
     print("A: Strafe left")
@@ -188,6 +196,13 @@ def main(gui=1, save_video=False):
             next_pose_name = 'squat'
             action_start_time = env.cur_time
             current_time = 0
+        elif '9' in pressed_keys:
+            current_pose = next_pose
+            current_pose_name = next_pose_name
+            next_pose = poses['pick_object']
+            next_pose_name = 'pick_object'
+            action_start_time = env.cur_time
+            current_time = 0
         elif 'w' in pressed_keys:
             locomotion_mode = 1  # walk_forward
         elif 's' in pressed_keys:
@@ -205,6 +220,8 @@ def main(gui=1, save_video=False):
             locomotion_mode = 8  # walk_in_x
         elif 'z' in pressed_keys:
             locomotion_mode = 9  # go to list of waypoints (in default.yaml)
+        elif 'm' in pressed_keys:
+            locomotion_mode = 10  # go to list of WaypointsBack (in default.yaml)
         elif 'g' in pressed_keys:
             gripper_state = 1 - gripper_state  # Toggle between 0 and 1
             gripper_start_time = env.cur_time

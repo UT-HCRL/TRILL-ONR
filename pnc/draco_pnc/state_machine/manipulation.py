@@ -58,7 +58,7 @@ class Manipulation(StateMachine):
             self._start_time, self._moving_duration, target_lh_iso
         )
 
-        if self._state_id == LocomanipulationState.BALANCE:
+        if self._state_id == LocomanipulationState.BALANCE or self._state_id == LocomanipulationState.DH_MANIPULATION:
             self._hierarchy_managers["rhand_pos"].initialize_ramp_to_max(
                 self._sp.curr_time, self._trans_duration
             )

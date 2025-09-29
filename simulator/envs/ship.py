@@ -1,9 +1,12 @@
 import numpy as np
 import os
 from robosuite.models.arenas import EmptyArena
+
+import util.geom
 from .base import BaseEnv
 from xml.etree.ElementTree import Element, SubElement
-from simulator.objects import DoorObject
+from simulator.objects import DoorObject, TrayObject
+from simulator.objects import TableObject
 
 class ShipEnv(BaseEnv):
     def __init__(self):
@@ -19,6 +22,8 @@ class ShipEnv(BaseEnv):
         self._setup_scene()
         self._setup_lighting()
         self._setup_door()
+        self._setup_table()
+        # self._setup_tray()
 
     def _setup_default_classes(self):
         default = Element('default')
@@ -227,6 +232,30 @@ class ShipEnv(BaseEnv):
         for equality in self.door.equality:
             self.world.equality.append(equality)
 
+    def _setup_table(self):
+        self.table = TableObject(name="ShipTable")
+
+        self.world.merge_assets(self.table)
+        self.world.worldbody.append(self.table.get_obj())
+
+        for contact in self.table.contact:
+            self.world.contact.append(contact)
+
+        for equality in self.table.equality:
+            self.world.equality.append(equality)
+
+    # def _setup_tray(self):
+    #     self.tray = TrayObject(name="ShipTray")
+    #
+    #     self.world.merge_assets(self.tray)
+    #     self.world.worldbody.append(self.tray.get_obj())
+    #
+    #     for contact in self.tray.contact:
+    #         self.world.contact.append(contact)
+    #
+    #     for equality in self.tray.equality:
+    #         self.world.equality.append(equality)
+
     def _reset_robot(self, initial_pos=None):
         if initial_pos is None:
             initial_pos = {
@@ -251,6 +280,27 @@ class ShipEnv(BaseEnv):
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
                 self.sim.data.qpos[joint_qposadr] = 0.0
+
+        if hasattr(self, 'table'):
+            table_body_id = self.sim.model.body_name2id(self.table.root_body)
+            self.sim.model.body_pos[table_body_id] = np.array([0., 0., 0.0])
+            self.sim.model.body_quat[table_body_id] = np.array([0.7071, 0.0, 0.0, 0.7071])
+
+            for joint in self.table.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.0, 1.0, 0.0])
+
+        # if hasattr(self, 'table') and hasattr(self, 'tray'):
+        #     tray_body_id = self.sim.model.body_name2id(self.tray.root_body)
+        #     self.sim.model.body_pos[tray_body_id] = np.array([0., 0., 0])
+        #     self.sim.model.body_quat[tray_body_id] = np.array([0.7071, 0.0, 0.0, 0.7071])
+        #
+        #     for joint in self.tray.joints:
+        #         joint_id = self.sim.model.joint_name2id(joint)
+        #         joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+        #         self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.0, 1.1, 0.65])
+        #         self.sim.data.qpos[joint_qposadr+3:joint_qposadr+7] = util.geom.euler_to_quat([np.pi/2, 0., 0.])
 
     def _check_success(self):
         self._success = False 

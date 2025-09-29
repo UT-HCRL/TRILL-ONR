@@ -65,6 +65,7 @@ Action:
       7: balance
       8: walk_in_x
       9: go_to_waypoints
+      10: go_to_waypoints_back
     aux:
       neck:
         0: forward
@@ -287,9 +288,12 @@ Walking:
     Trun Angle: 0.5
     Strafe Distance: 0.10
     Waypoints:
-      - [-1.2, 1.8]
-      - [-2.4, 0.6]
-      - [-3.6, -0.4]
+      - [0.0, 1.6]
+#      - [-1.2, 1.8]
+#      - [-2.4, 0.6]
+#      - [-3.6, -0.4]
+    WaypointsBack:
+      - [-0.5, 1.6]
 
 
 Manipulation:
