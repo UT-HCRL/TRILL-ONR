@@ -111,6 +111,8 @@ class DoorObject(MujocoXMLObject):
             xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "slide_door.xml")
         elif type == "hinge":
             xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "hinge_door.xml")
+        elif type == "onr":
+            xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "onr_slide_door.xml")
         elif type == "wheel":
             xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "wheel_door.xml")
         else:
@@ -127,7 +129,7 @@ class DoorObject(MujocoXMLObject):
         self.door_body = self.naming_prefix + "door"
         self.frame_body = self.naming_prefix + "frame"
         self.handle_body = self.naming_prefix + "handle"
-        if type == "slide":
+        if type == "slide" or type == "onr":
             self.door_joint = self.naming_prefix + "slide"
         else:
             self.door_joint = self.naming_prefix + "hinge"
@@ -201,6 +203,23 @@ class BreadObject(MujocoXMLObject):
             obj_type="all",
             duplicate_collision_geoms=True,
         )
+
+
+class SocketObject(MujocoXMLObject):
+    """
+    Socket object (used in PickPlace)
+    """
+
+    def __init__(self, name):
+        xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "socket.xml")
+        super().__init__(
+            xml_path_completion(xml_path),
+            name=name,
+            joints=[dict(type="free", damping="0.0005")],
+            obj_type="all",
+            duplicate_collision_geoms=True,
+        )
+
 
 
 class TrayObject(MujocoXMLObject):

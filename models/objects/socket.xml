@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- from https://github.com/vikashplus/mj_envs/tree/master/mj_envs/hand_manipulation_suite/assets -->
+<!-- Information about door can be found in this paper: https://arxiv.org/pdf/1709.10087.pdf -->
+
+<mujoco model="toolbox">
+  <asset>
+    <texture file="../textures/light-wood.png" type="cube" name="light-wood" />
+    <texture file="../textures/steel-brushed.png" type="cube" name="steel" />
+    <material name="MatSteel" texture="steel" specular="1" shininess="0.3" rgba="0.9 0.9 0.9 1" />
+    <material name="MatLightWood" texture="light-wood" texrepeat="3 3" specular="0.4" shininess="0.1" />
+  </asset>
+  <worldbody>
+    <body>
+      <body name="object">
+        <inertial pos="0 0 0" mass="0.1" diaginertia="0.00052 0.0012 0.001"/>
+        <site name="origin" pos="0 0 0" rgba="0 0 0 0" size="0.005"/>
+
+        <geom name="handle"
+          pos="0 0 0.04" size="0.02 0.02 0.08" type="box" 
+          density="1.0"
+          group="0" friction="10 10 10"
+          rgba="0 0 0 0"
+          />
+        <geom name="handle_vis"
+          pos="0 0 0.04" size="0.02 0.02 0.08" type="box" 
+          group="1" contype="0" conaffinity="0"
+          material="MatLightWood"
+          />
+
+        <body name="grasping_point" pos="0.0 0.0 0.0"/>
+        <site name="grasping_point" pos="0.0 0.0 0.0" size="0.05" rgba="0 0 1 1" />
+
+      </body>
+
+      <site name="bottom_site" pos="0 0 -0.0207" rgba="0 0 0 0" size="0.005"/>
+      <site name="top_site" pos="0 0 0.007" rgba="0 0 0 0" size="0.005"/>
+      <site name="horizontal_radius_site" pos="0 0 0" rgba="0 0 0 0" size="0.003"/>
+    </body>
+
+  </worldbody>
+</mujoco>

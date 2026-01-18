@@ -20,4 +20,6 @@ from .xml_objects import (
     LineObject,
     CartObject,
     PegboardObject,
+    SocketObject,
 )
+from .shelf import ShelfObject

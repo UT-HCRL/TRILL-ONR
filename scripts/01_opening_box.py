@@ -6,7 +6,7 @@ sys.path.append(cwd)
 
 import numpy as np
 from util import geom
-from simulator.envs import DoorEnv, EmptyEnv
+from simulator.envs import ONRDoorEnv, EmptyEnv
 from simulator.render import CV2Renderer
 from simulator.recorder import HDF5Recorder
 import time
@@ -26,19 +26,18 @@ def open_door(env, lh_target_pos, lh_input_quat, gain=0.02, stage=0):
         dims = [0, 1, 2]
         grasping = False
     elif stage == 1:
-        task = "rotating"
-        tolerance = 0.02
-        dims = [0, 2]
-        grasping = True
+        task = "sliding"
+        tolerance = 0.05
+        dims = [0, 1]
+        grasping = False
     else:
         task = "releasing"
-        tolerance = 0.02
+        tolerance = 0.01
         dims = [0]
-        grasping = True
+        grasping = False
 
     target_pos = grasping_state[f"latch_{task}_pos"]
     lh_eef_pos = grasping_state["lh_grasping_pos"]
-
 
     error_pos = target_pos - lh_eef_pos
     new_lh_target_pos = lh_target_pos + gain * error_pos
@@ -71,9 +70,9 @@ def reset_hand(env, cur_target_pos, input_quat, gain=0.02, tolerance=0.01, hand=
     return new_target_pos, input_quat, False, done
 
 
-def push_door(env, rh_target_pos, rh_input_quat, gain=0.02, tolerance=0.01, hand="left"):
+def slide_door(env, rh_target_pos, rh_input_quat, gain=0.02, tolerance=0.01, hand="left"):
 
-    target_pos = np.array([0.38, -0.2, 0.1])
+    target_pos = np.array([0.12, 0.25, 0.1])
 
 
     error_pos = target_pos - rh_target_pos
@@ -93,11 +92,11 @@ TRANSFORM_VR = np.array(
 )  # geom.euler_to_rot(np.array([0, np.pi, 0]))
 
 ENV_LOOKUP = {
-    "door": DoorEnv,
+    "door": ONRDoorEnv,
 }
 
 
-def main(gui, env_type, cam_name="upview", subtask=0, save_video=False):
+def main(gui, env_type, cam_name="upview", subtask=0, save_video=True):
     if env_type in ENV_LOOKUP.keys():
         env_class = ENV_LOOKUP[env_type]
     else:
@@ -136,10 +135,10 @@ def main(gui, env_type, cam_name="upview", subtask=0, save_video=False):
     left_pos = np.array([0.22, 0.25, 0.1])
 
     lh_target_pos = left_pos
-    lh_input_quat = geom.euler_to_quat(np.array([0, 0, 0]))
+    lh_input_quat = geom.euler_to_quat(np.array([0.0*np.pi, 0, 0]))
 
     rh_target_pos = right_pos
-    rh_input_quat = geom.euler_to_quat(np.array([0, 0, 0]))
+    rh_input_quat = geom.euler_to_quat(np.array([-0.0*np.pi, 0, 0]))
 
     stage = 0
 
@@ -155,16 +154,12 @@ def main(gui, env_type, cam_name="upview", subtask=0, save_video=False):
             lh_target_pos, lh_input_quat, grasping, task_done = open_door(env, lh_target_pos, lh_input_quat, gain=0.02, stage=stage)
             stage += task_done
         if stage == 3:
-            lh_target_pos, lh_input_quat, grasping, task_done = reset_hand(env, lh_target_pos, lh_input_quat, gain=0.02, hand="left")
-            stage += task_done
+            lh_target_pos, lh_input_quat, grasping, task_done = reset_hand(env, lh_target_pos, lh_input_quat, gain=0.05, hand="left")
+            stage += task_done                
         if stage == 4:
-            # this stage should be with walking
-            rh_target_pos, rh_input_quat, grasping, task_done = push_door(env, rh_target_pos, rh_input_quat, gain=0.02)
+            action["locomotion"] = 4
             stage += task_done
-        if stage == 5:
-            rh_target_pos, rh_input_quat, grasping, task_done = reset_hand(env, rh_target_pos, rh_input_quat, gain=0.02, hand="right")
 
-        print("Stage:", stage)
 
         lh_input = geom.quat_to_rot(lh_input_quat)
         rh_input = geom.quat_to_rot(rh_input_quat)

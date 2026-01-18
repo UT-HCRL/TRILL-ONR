@@ -558,7 +558,7 @@ def transform_local_trajectory(sim, robot, global_trajectory):
             #     <site name="Door_handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
 
 
-def get_grasping_state(sim, robot, door):
+def get_grasping_state(sim, robot, object):
 
     model, data = get_mujoco_objects(sim)
     grasping_data = OrderedDict()
@@ -605,9 +605,9 @@ def get_grasping_state(sim, robot, door):
     grasping_data["rh_grasping_quat"] = rh_grasping_quat
 
 
-    for body_name in ['grasping', 'rotating', 'releasing']:
+    for body_name in ['grasping', 'rotating', 'sliding', 'sliding', 'releasing', 'releasing', 'socket']:
         body_id = mujoco.mj_name2id(
-            model, mujoco.mjtObj.mjOBJ_XBODY, door.naming_prefix + f"{body_name}_point"
+            model, mujoco.mjtObj.mjOBJ_XBODY, object.naming_prefix + f"{body_name}_point"
         )
         body_pos = np.dot(
             rot_world_basejoint.transpose(), data.xpos[body_id] - base_com_pos
