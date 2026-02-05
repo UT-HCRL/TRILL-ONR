@@ -1,0 +1,9 @@
+# Ignore data recorded by default
+data/pnc.pkl
+
+# Ignore all __pycache__ directories at any level
+**/__pycache__/
+
+# Also ignore the compiled bytecode files themselves
+*.py[cod]
+*$py.class
