@@ -1,3 +1,5 @@
+import numpy as np
+
 from pnc.dcm import Footstep
 from pnc.draco_pnc.state_machine import LocomanipulationState
 from pnc.draco_pnc.state_provider import DracoManipulationStateProvider
@@ -9,6 +11,8 @@ class SingleSupportSwing(StateMachine):
         super(SingleSupportSwing, self).__init__(id, robot)
         self._trajectory_managers = tm
         self._leg_side = leg_side
+        self._nominal_lfoot_iso = np.eye(4)
+        self._nominal_rfoot_iso = np.eye(4)
         self._sp = DracoManipulationStateProvider(robot)
         self._start_time = 0.0
 
@@ -28,12 +32,14 @@ class SingleSupportSwing(StateMachine):
                 self._end_time,
                 self._trajectory_managers["dcm"].footstep_list[footstep_idx],
             )
+            self._nominal_lfoot_iso = self._robot.get_link_iso("l_foot_contact")
         else:
             self._trajectory_managers["lfoot"].initialize_swing_foot_trajectory(
                 self._sp.curr_time,
                 self._end_time,
                 self._trajectory_managers["dcm"].footstep_list[footstep_idx],
             )
+            self._nominal_rfoot_iso = self._robot.get_link_iso("r_foot_contact")
 
     def one_step(self):
         self._state_machine_time = self._sp.curr_time - self._start_time
@@ -48,9 +54,11 @@ class SingleSupportSwing(StateMachine):
             self._trajectory_managers["lfoot"].update_swing_foot_desired(
                 self._sp.curr_time
             )
-            self._trajectory_managers["rfoot"].use_current()
+            self._trajectory_managers["rfoot"].use_nominal(self._nominal_rfoot_iso)
+            # self._trajectory_managers["rfoot"].use_current()
         else:
-            self._trajectory_managers["lfoot"].use_current()
+            # self._trajectory_managers["lfoot"].use_current()
+            self._trajectory_managers["lfoot"].use_nominal(self._nominal_lfoot_iso)
             self._trajectory_managers["rfoot"].update_swing_foot_desired(
                 self._sp.curr_time
             )

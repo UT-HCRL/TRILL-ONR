@@ -1,0 +1,126 @@
+# Blender 4.3.2 MTL File: 'None'
+# www.blender.org
+
+newmtl Box_Material
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.905660 0.276824 0.276824
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Device1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device1_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device1_normal.png
+
+newmtl Device4
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device4_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Machinery compartment devices/Textures/device4_normal.png
+
+newmtl Engine
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/engine_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/engine_normal.png
+
+newmtl Floor1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.939428 0.636792
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl M_Room_01
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Environment/Objects_NoProperties/AssociatedArt_DontDelete/Art/Textures/T_Room_01_BC 1.png
+
+newmtl Oxygen
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/oxygen_basecolor.png
+map_Bump -bm 1.000000 /home/sanjayovs/Desktop/1_Projects/HARMONIC/Unity Simulations/Unity Projects/LEIA_BT_SIM_V0/Assets/Engine room devices/Textures/oxygen_normal.png
+
+newmtl ShipControl
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.858491 0.858491 0.858491
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl UpperDeck_Walls
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.811321 0.811321 0.811321
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl dark
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.120154 0.120154 0.120154
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl floor
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.255981 0.255981 0.255981
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl plain
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2

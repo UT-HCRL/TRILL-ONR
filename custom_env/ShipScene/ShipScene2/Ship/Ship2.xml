@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<mujoco model="Ship">
+  <default>
+    <default class="visual">
+      <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+    </default>
+    <default class="collision">
+      <geom group="3" type="mesh"/>
+    </default>
+  </default>
+  
+  <option gravity="0 0 -9.81"/>
+  
+  <visual>
+    <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.1 0.1 0.1"/>
+    <quality shadowsize="4096"/>
+    <global offwidth="800" offheight="800"/>
+  </visual>
+
+  <asset>
+    <texture type="2d" name="Base_metal" file="Base_metal.png"/>
+    <material name="Base_metal" texture="Base_metal" specular="0.5" shininess="0.2"/>
+    <material name="Brass-Matte1" specular="0.5" shininess="0.2" rgba="0.820755 0.676179 0.000000 1.000000"/>
+    <material name="Brass_-_Matte" specular="0.5" shininess="0.2" rgba="0.952941 0.796078 0.486275 1.000000"/>
+    <texture type="2d" name="compressor_basecolor" file="compressor_basecolor.png"/>
+    <material name="Compressor" texture="compressor_basecolor" specular="0.5" shininess="0.2"/>
+    <material name="ControlboardDetailed" specular="0.5" shininess="0.2" rgba="0.4 0.4 0.45 1.0"/>
+    <material name="DeckDetailed" specular="0.5" shininess="0.2" rgba="0.6 0.6 0.65 1.0"/>
+    <texture type="2d" name="device1_basecolor" file="device1_basecolor.png"/>
+    <material name="Device1" texture="device1_basecolor" specular="0.5" shininess="0.2"/>
+    <texture type="2d" name="device4_basecolor" file="device4_basecolor.png"/>
+    <material name="Device4" texture="device4_basecolor" specular="0.5" shininess="0.2"/>
+    <texture type="2d" name="engine_basecolor" file="engine_basecolor.png"/>
+    <material name="Engine" texture="engine_basecolor" specular="0.5" shininess="0.2"/>
+    <material name="LowerDeck_Walls" specular="0.5" shininess="0.2" rgba="0.811321 0.811321 0.811321 1.000000"/>
+    <texture type="2d" name="T_Room_01_BC 1" file="T_Room_01_BC 1.png"/>
+    <material name="M_Room_01" texture="T_Room_01_BC 1" specular="0.5" shininess="0.2"/>
+    <texture type="2d" name="oxygen_basecolor" file="oxygen_basecolor.png"/>
+    <material name="Oxygen" texture="oxygen_basecolor" specular="0.5" shininess="0.2"/>
+    <material name="ShipControl" specular="0.5" shininess="0.2" rgba="0.858491 0.858491 0.858491 1.000000"/>
+    <material name="Stainless_Steel_-_Polished" specular="0.5" shininess="0.2" rgba="0.796078 0.796078 0.796078 1.000000"/>
+    <material name="ThermostatBody1" specular="0.5" shininess="0.2" rgba="0.311321 0.311321 0.311321 1.000000"/>
+    <material name="ThermostatBody_4" specular="0.5" shininess="0.2" rgba="0.000000 0.367925 0.056851 1.000000"/>
+    <material name="Thermostat_Body_2" specular="0.5" shininess="0.2" rgba="0.556604 0.000000 0.000000 1.000000"/>
+    <material name="Thermostat_Body_3" specular="0.5" shininess="0.2" rgba="0.000000 0.174627 0.943396 1.000000"/>
+    <material name="UpperDeck_Walls" specular="0.5" shininess="0.2" rgba="0.811321 0.811321 0.811321 1.000000"/>
+    <material name="chair_table_aluminum_a_01" specular="0.5" shininess="0.2" rgba="0.7 0.7 0.72 1.0"/>
+    <material name="drain_mat_a_01" specular="0.5" shininess="0.2" rgba="0.3 0.3 0.32 1.0"/>
+    <material name="electric_generator_a_01" specular="0.5" shininess="0.2" rgba="0.45 0.45 0.5 1.0"/>
+    <material name="fire_extinguisher_a_01" specular="0.5" shininess="0.2" rgba="0.8 0.2 0.2 1.0"/>
+    <material name="pipe_insulated_a_01" specular="0.5" shininess="0.2" rgba="0.6 0.6 0.7 1.0"/>
+    <material name="pipe_insulated_b_01" specular="0.5" shininess="0.2" rgba="0.5 0.5 0.6 1.0"/>
+    <material name="shelving_metal_a_01" specular="0.5" shininess="0.2" rgba="0.75 0.75 0.78 1.0"/>
+    <material name="step_ladder_a_01" specular="0.5" shininess="0.2" rgba="0.65 0.65 0.68 1.0"/>
+    <mesh file="Ship_0.obj"/>
+    <mesh file="Ship_1.obj"/>
+    <mesh file="Ship_2.obj"/>
+    <mesh file="Ship_3.obj"/>
+    <mesh file="Ship_4.obj"/>
+    <mesh file="Ship_5.obj"/>
+    <mesh file="Ship_6.obj"/>
+    <mesh file="Ship_7.obj"/>
+    <mesh file="Ship_8.obj"/>
+    <mesh file="Ship_9.obj"/>
+    <mesh file="Ship_10.obj"/>
+    <mesh file="Ship_11.obj"/>
+    <mesh file="Ship_12.obj"/>
+    <mesh file="Ship_13.obj"/>
+    <mesh file="Ship_14.obj"/>
+    <mesh file="Ship_15.obj"/>
+    <mesh file="Ship_16.obj"/>
+    <mesh file="Ship_17.obj"/>
+    <mesh file="Ship_18.obj"/>
+    <mesh file="Ship_19.obj"/>
+    <mesh file="Ship_20.obj"/>
+    <mesh file="Ship_21.obj"/>
+    <mesh file="Ship_22.obj"/>
+    <mesh file="Ship_23.obj"/>
+    <mesh file="Ship_24.obj"/>
+    <mesh file="Ship_25.obj"/>
+    <mesh file="Ship_26.obj"/>
+    <mesh file="Ship_27.obj"/>
+  </asset>
+
+  <worldbody>
+    <!-- Main directional light from above -->
+    <light name="top" pos="0 0 10" dir="0 0 -1" directional="true" diffuse="0.7 0.7 0.7" specular="0.3 0.3 0.3" ambient="0.4 0.4 0.4"/>
+    
+    <!-- Fill light from the front -->
+    <light name="front" pos="5 0 3" dir="-1 0 -0.3" directional="true" diffuse="0.4 0.4 0.4" specular="0.1 0.1 0.1"/>
+    
+    <!-- Side light for depth -->
+    <light name="side" pos="0 5 2" dir="0 -1 -0.2" directional="true" diffuse="0.3 0.3 0.3" specular="0.1 0.1 0.1"/>
+    
+    <body name="Ship" pos="0 0 0">
+      <geom mesh="Ship_0" material="LowerDeck_Walls" class="visual"/>
+      <geom mesh="Ship_1" material="step_ladder_a_01" class="visual"/>
+      <geom mesh="Ship_2" material="Engine" class="visual"/>
+      <geom mesh="Ship_3" material="Compressor" class="visual"/>
+      <geom mesh="Ship_4" material="Base_metal" class="visual"/>
+      <geom mesh="Ship_5" material="drain_mat_a_01" class="visual"/>
+      <geom mesh="Ship_6" material="UpperDeck_Walls" class="visual"/>
+      <geom mesh="Ship_7" material="DeckDetailed" class="visual"/>
+      <geom mesh="Ship_8" material="ShipControl" class="visual"/>
+      <geom mesh="Ship_9" material="Oxygen" class="visual"/>
+      <geom mesh="Ship_10" material="fire_extinguisher_a_01" class="visual"/>
+      <geom mesh="Ship_11" material="pipe_insulated_b_01" class="visual"/>
+      <geom mesh="Ship_12" material="pipe_insulated_a_01" class="visual"/>
+      <geom mesh="Ship_13" material="electric_generator_a_01" class="visual"/>
+      <geom mesh="Ship_14" material="Thermostat_Body_3" class="visual"/>
+      <geom mesh="Ship_15" material="Brass_-_Matte" class="visual"/>
+      <geom mesh="Ship_16" material="Stainless_Steel_-_Polished" class="visual"/>
+      <geom mesh="Ship_17" material="ThermostatBody_4" class="visual"/>
+      <geom mesh="Ship_18" material="Brass-Matte1" class="visual"/>
+      <geom mesh="Ship_19" material="Thermostat_Body_2" class="visual"/>
+      <geom mesh="Ship_20" material="ThermostatBody1" class="visual"/>
+      <geom mesh="Ship_21" material="shelving_metal_a_01" class="visual"/>
+      <geom mesh="Ship_22" material="chair_table_aluminum_a_01" class="visual"/>
+      <geom mesh="Ship_23" material="ControlboardDetailed" class="visual"/>
+      <geom mesh="Ship_24" material="M_Room_01" class="visual"/>
+      <geom mesh="Ship_25" material="ShipControl" class="visual"/>
+      <geom mesh="Ship_26" material="Device4" class="visual"/>
+      <geom mesh="Ship_27" material="Device1" class="visual"/>
+      <geom mesh="Ship_0" class="collision"/>
+      <geom mesh="Ship_1" class="collision"/>
+      <geom mesh="Ship_2" class="collision"/>
+      <geom mesh="Ship_3" class="collision"/>
+      <geom mesh="Ship_4" class="collision"/>
+      <geom mesh="Ship_5" class="collision"/>
+      <geom mesh="Ship_6" class="collision"/>
+      <geom mesh="Ship_7" class="collision"/>
+      <geom mesh="Ship_8" class="collision"/>
+      <geom mesh="Ship_9" class="collision"/>
+      <geom mesh="Ship_10" class="collision"/>
+      <geom mesh="Ship_11" class="collision"/>
+      <geom mesh="Ship_12" class="collision"/>
+      <geom mesh="Ship_13" class="collision"/>
+      <geom mesh="Ship_14" class="collision"/>
+      <geom mesh="Ship_15" class="collision"/>
+      <geom mesh="Ship_16" class="collision"/>
+      <geom mesh="Ship_17" class="collision"/>
+      <geom mesh="Ship_18" class="collision"/>
+      <geom mesh="Ship_19" class="collision"/>
+      <geom mesh="Ship_20" class="collision"/>
+      <geom mesh="Ship_21" class="collision"/>
+      <geom mesh="Ship_22" class="collision"/>
+      <geom mesh="Ship_23" class="collision"/>
+      <geom mesh="Ship_24" class="collision"/>
+      <geom mesh="Ship_25" class="collision"/>
+      <geom mesh="Ship_26" class="collision"/>
+      <geom mesh="Ship_27" class="collision"/>
+    </body>
+  </worldbody>
+</mujoco>

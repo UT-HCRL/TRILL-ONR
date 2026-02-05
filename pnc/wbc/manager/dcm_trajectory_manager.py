@@ -6,8 +6,10 @@ import pickle
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
+import util.geom
 from pnc.dcm.footstep import Footstep
 from pnc.dcm.footstep import interpolate
+from util import geom
 
 
 class DCMTransferType(object):
@@ -55,6 +57,8 @@ class DCMTrajectoryManager(object):
         self._nominal_backward_step = -0.25
         self._nominal_turn_radians = np.pi / 4.0
         self._nominal_strafe_distance = 0.125
+        self._waypoints_lst = None
+        self._waypoints_back_lst = None
 
         self._set_temporal_params()
 
@@ -158,6 +162,7 @@ class DCMTrajectoryManager(object):
         # Ref Trajectory
         com_pos_ref = np.zeros((n_eval, 3))
         com_vel_ref = np.zeros((n_eval, 3))
+        dcm_pos_ref = np.zeros((n_eval, 3))
         base_ori_ref = np.zeros((n_eval, 4))
         t_traj = np.zeros((n_eval, 1))
 
@@ -166,12 +171,14 @@ class DCMTrajectoryManager(object):
             t_traj[i, 0] = t
             com_pos_ref[i, :] = self._dcm_planner.compute_reference_com_pos(t)
             com_vel_ref[i, :] = self._dcm_planner.compute_reference_com_vel(t)
+            dcm_pos_ref[i, :] = self._dcm_planner._compute_ref_dcm(t)
             base_ori_ref[i, :], _, _ = self._dcm_planner.compute_reference_base_ori(t)
             t += t_step
 
         data["reference"] = dict()
         data["reference"]["com_pos"] = com_pos_ref
         data["reference"]["com_vel"] = com_vel_ref
+        data["reference"]["dcm_pos"] = dcm_pos_ref
         data["reference"]["base_ori"] = base_ori_ref
         data["reference"]["time"] = t_traj
 
@@ -220,8 +227,13 @@ class DCMTrajectoryManager(object):
         self._reset_idx_and_clear_footstep_list()
         self._update_starting_stance()
         curr_x = self._mf_stance.iso[0, 3]
-        nstep = int(np.abs(goal_x - curr_x) // self._nominal_forward_step)
+        nstep = int((goal_x - curr_x) // self._nominal_forward_step)
         xlen = (goal_x - curr_x) / nstep
+        # see if these are steps forward or backwards
+        curr_rpy = geom.rot_to_euler(self._mf_stance.rot)
+        if curr_rpy[2] < 0:
+            nstep *= -1
+        print(f"Scheduled to take {nstep} steps of length {xlen} to go from {curr_x} to {goal_x}")
         self._populate_walk_forward(nstep, xlen)
         self._alternate_leg()
 
@@ -233,19 +245,65 @@ class DCMTrajectoryManager(object):
         ylen = (goal_y - curr_y) / nstep
         self._populate_strafe(nstep, ylen)
 
+    def rotate_facing_next_waypoint(self, destination='to'):
+        # grab next waypoint
+        if destination == 'to':
+            waypoint_xy = self.waypoints_lst[0]
+        elif destination == 'back':
+            waypoint_xy = self.waypoints_back_lst[0]
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when rotating to next waypoint")
+        curr_xy = self._robot._q[:2]
+        w_angle = np.arctan2(waypoint_xy[1] - curr_xy[1], waypoint_xy[0] - curr_xy[0])
+        w_torso_rpy = util.geom.quat_to_euler(self._robot._q[3:7])
+        b_angle = w_angle - w_torso_rpy[2]
+        n_turn_steps = max(abs(b_angle // self.nominal_turn_radians), 1)
+        des_angle_turns = b_angle / n_turn_steps
+        n_turn_steps = int(n_turn_steps)
+        print(f'Taking {n_turn_steps} rotation steps of {des_angle_turns:.3f} rad each.')
+        if des_angle_turns > 0:
+            self.turn_left(n_turn_steps, des_angle_turns)
+        if des_angle_turns < 0:
+            self.turn_right(n_turn_steps, des_angle_turns)
+
+    def move_fwd_to_next_waypoint(self, destination='to'):
+        # Note: this assumes the robot is already facing the next waypoint
+        if destination == 'to':
+            waypoint_xy = self.waypoints_lst[0]
+        elif destination == 'back':
+            waypoint_xy = self.waypoints_back_lst[0]
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when moving to next waypoint")
+
+        # if these are the first steps, take the current robot position
+        if len(self._footstep_list) == 0:
+            curr_xy = self._mf_stance.iso[:2, 3]
+        else:
+            curr_xy = self._footstep_list[-1].pos[:2]
+        dist_to_waypoint = np.linalg.norm(waypoint_xy - curr_xy)
+
+        n_fwd_steps = int(math.ceil(dist_to_waypoint / self._nominal_forward_step))
+        xlen = dist_to_waypoint / n_fwd_steps
+        print(f"Take {n_fwd_steps} steps of length {xlen:.4f} to travel {dist_to_waypoint:.4f} m")
+        self._populate_walk_forward(n_fwd_steps, xlen)
+        self._alternate_leg()
+        # debug
+        for i, fs in enumerate(self._footstep_list):
+            print(f"Footstep {i} with foot {fs.side} on position {fs.pos[:2]}")
+
     def walk_in_place(self):
         self._reset_idx_and_clear_footstep_list()
         self._populate_step_in_place(1, self._robot_side)
         self._alternate_leg()
 
-    def walk_forward(self):
+    def walk_forward(self, n_steps=1):
         self._reset_idx_and_clear_footstep_list()
-        self._populate_walk_forward(1, self._nominal_forward_step)
+        self._populate_walk_forward(n_steps, self._nominal_forward_step)
         self._alternate_leg()
 
-    def walk_backward(self):
+    def walk_backward(self, n_steps=1):
         self._reset_idx_and_clear_footstep_list()
-        self._populate_walk_forward(1, self._nominal_backward_step)
+        self._populate_walk_forward(n_steps, self._nominal_backward_step)
         self._alternate_leg()
 
     def strafe_left(self):
@@ -256,13 +314,27 @@ class DCMTrajectoryManager(object):
         self._reset_idx_and_clear_footstep_list()
         self._populate_strafe(1, -self._nominal_strafe_distance)
 
-    def turn_left(self):
+    def turn_left(self, n_turns=1, turn_rad=None):
+        if turn_rad is None:
+            turn_rad = self._nominal_turn_radians
         self._reset_idx_and_clear_footstep_list()
-        self._populate_turn(1, self._nominal_turn_radians)
+        self._populate_turn(n_turns, turn_rad)
 
-    def turn_right(self):
+    def turn_right(self, n_turns=1, turn_rad=None):
+        if turn_rad is None:
+            turn_rad = -self._nominal_turn_radians
         self._reset_idx_and_clear_footstep_list()
-        self._populate_turn(1, -self._nominal_turn_radians)
+        self._populate_turn(n_turns, turn_rad)
+
+    def clear_next_waypoint(self, destination='to'):
+        if destination == 'to':
+            if len(self.waypoints_lst) > 0:
+                self.waypoints_lst.pop(0)
+        elif destination == 'back':
+            if len(self.waypoints_back_lst) > 0:
+                self.waypoints_back_lst.pop(0)
+        else:
+            raise ValueError("Destination must be 'to' or 'back' when clearing next waypoint")
 
     def _populate_step_in_place(self, num_step, robot_side_first):
         self._update_starting_stance()
@@ -294,9 +366,15 @@ class DCMTrajectoryManager(object):
         self._update_starting_stance()
 
         new_stance = Footstep()
-        mf_stance = copy.deepcopy(self._mf_stance)
+        if len(self._footstep_list) > 0:
+            mf_stance = copy.deepcopy(self._footstep_list[-1])
+        else:
+            mf_stance = copy.deepcopy(self._mf_stance)
 
-        robot_side = Footstep.LEFT_SIDE
+        if mf_stance.side == Footstep.LEFT_SIDE:
+            robot_side = Footstep.RIGHT_SIDE
+        else:
+            robot_side = Footstep.LEFT_SIDE
         for i in range(num_steps):
             if robot_side == Footstep.LEFT_SIDE:
                 translate = np.array(
@@ -539,17 +617,25 @@ class DCMTrajectoryManager(object):
         self._nominal_strafe_distance = value
 
     @property
-    def nominal_turn_radians(self):
-        return self._nominal_turn_radians
-
-    @nominal_turn_radians.setter
-    def nominal_turn_radians(self, value):
-        self._nominal_turn_radians = value
-
-    @property
     def footstep_list(self):
         return self._footstep_list
 
     @property
     def curr_footstep_idx(self):
         return self._curr_footstep_idx
+
+    @property
+    def waypoints_lst(self):
+        return self._waypoints_lst
+
+    @waypoints_lst.setter
+    def waypoints_lst(self, value):
+        self._waypoints_lst = value
+
+    @property
+    def waypoints_back_lst(self):
+        return self._waypoints_back_lst
+
+    @waypoints_back_lst.setter
+    def waypoints_back_lst(self, value):
+        self._waypoints_back_lst = value

@@ -3,3 +3,14 @@ from .base import SIM_TIME, RENDER_TIME, INIT_TIME, WBC_TIME, TELEOP_TIME
 from .door import DoorEnv
 from .onr import ONRDoorEnv
 from .empty import EmptyEnv
+from .checkered import CheckeredEnv
+from .ship import ShipEnv
+from .ship2 import ShipEnv2
+__all__ = [
+    "BaseEnv",
+    "DoorEnv",
+    "EmptyEnv",
+    "CheckeredEnv",
+    "ShipEnv",
+    "ShipEnv2",
+]

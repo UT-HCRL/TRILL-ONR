@@ -109,6 +109,21 @@ class BaseEnv:
             data={"action": cur_action, "observation": prv_obs},
         )
 
+        if cur_cmd["locomotion"] == "go_to_waypoints" or cur_cmd["locomotion"] == "go_to_waypoints_back":  # waypoints
+            # when walking, prioritize upper body pose
+            self.controller._interface._control_architecture._tci_container.upper_body_task.w_hierarchy = 30.0
+            self.controller._interface._control_architecture._hierarchy_managers["lhand_pos"]._w_min = 2.0
+            self.controller._interface._control_architecture._hierarchy_managers["rhand_pos"]._w_min = 2.0
+            self.controller._interface._control_architecture._hierarchy_managers["lhand_ori"]._w_min = 2.0
+            self.controller._interface._control_architecture._hierarchy_managers["rhand_ori"]._w_min = 2.0
+        elif cur_cmd["locomotion"] == 'balance':  # balance
+            # when balancing (for manipulation), prioritize hand pose
+            self.controller._interface._control_architecture._tci_container.upper_body_task.w_hierarchy = 1.0
+            self.controller._interface._control_architecture._hierarchy_managers["lhand_pos"]._w_min = 100.0
+            self.controller._interface._control_architecture._hierarchy_managers["rhand_pos"]._w_min = 100.0
+            self.controller._interface._control_architecture._hierarchy_managers["lhand_ori"]._w_min = 6.0
+            self.controller._interface._control_architecture._hierarchy_managers["rhand_ori"]._w_min = 6.0
+
         self.controller.update_trajectory(cur_cmd["trajectory"], cur_cmd["locomotion"])
         self.controller.update_gripper_target(cur_cmd["gripper"])
         self.controller.update_aux_target(cur_cmd["aux"])

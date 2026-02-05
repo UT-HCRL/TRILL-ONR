@@ -246,6 +246,12 @@ class DracoController(object):
                 self._interface.interrupt_logic._turn_right = True
             if locomotion == "balance":
                 self._interface.interrupt_logic._release = True
+            if locomotion == "walk_in_x":
+                self._interface.interrupt_logic._walk_in_x = True
+            if locomotion == "go_to_waypoints":
+                self._interface.interrupt_logic._go_to_waypoints = True
+            if locomotion == "go_to_waypoints_back":
+                self._interface.interrupt_logic._go_to_waypoints_back = True
 
         self._hand_target.update(
             {

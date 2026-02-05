@@ -341,8 +341,8 @@ def get_sensor_data(sim, robot):
     rf_height = get_link_iso(sim, robot, "link_left_foot")[2, 3]
     lf_height = get_link_iso(sim, robot, "link_right_foot")[2, 3]
 
-    sensor_data["b_rf_contact"] = True if rf_height <= 0.01 else False
-    sensor_data["b_lf_contact"] = True if lf_height <= 0.01 else False
+    sensor_data["b_rf_contact"] = True if rf_height <= 0.005 else False
+    sensor_data["b_lf_contact"] = True if lf_height <= 0.005 else False
 
     rot_world_basejoint = geom.quat_to_rot(base_com_quat)
     lh_eef_pos = np.dot(

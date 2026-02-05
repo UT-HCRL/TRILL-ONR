@@ -141,12 +141,12 @@ class DracoManipulationTCIContainer(TCIContainer):
         # ======================================================================
         # Rfoot Contact
         self._rfoot_contact = SurfaceContact(
-            robot, "r_foot_contact", 0.115, 0.065, 0.3, save_data
+            robot, "r_foot_contact", 0.115, 0.065, 0.7, save_data
         )
         self._rfoot_contact.rf_z_max = 1e-3  # Initial rf_z_max
         # Lfoot Contact
         self._lfoot_contact = SurfaceContact(
-            robot, "l_foot_contact", 0.115, 0.065, 0.3, save_data
+            robot, "l_foot_contact", 0.115, 0.065, 0.7, save_data
         )
         self._lfoot_contact.rf_z_max = 1e-3  # Initial rf_z_max
 
