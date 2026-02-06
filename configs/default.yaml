@@ -288,12 +288,12 @@ Walking:
     Trun Angle: 0.5
     Strafe Distance: 0.10
     Waypoints:
-      - [0.0, 1.6]
+      - [-0.3, -1.25]
 #      - [-1.2, 1.8]
 #      - [-2.4, 0.6]
 #      - [-3.6, -0.4]
     WaypointsBack:
-      - [-0.5, 1.6]
+      - [-0.6, -1.4]
 
 
 Manipulation:

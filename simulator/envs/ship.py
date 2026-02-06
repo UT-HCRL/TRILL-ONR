@@ -1,11 +1,10 @@
 import numpy as np
 import os
-from robosuite.models.arenas import EmptyArena
 
 import util.geom
 from .base import BaseEnv
 from xml.etree.ElementTree import Element, SubElement
-from simulator.objects import DoorObject, TrayObject
+from simulator.objects import DoorObject, TrayObject, SocketObject
 from simulator.objects import TableObject
 
 class ShipEnv(BaseEnv):
@@ -232,9 +231,19 @@ class ShipEnv(BaseEnv):
         for equality in self.door.equality:
             self.world.equality.append(equality)
 
-    def _setup_table(self):
-        self.table = TableObject(name="ShipTable")
+        self.sliding_door = DoorObject(name="FuseDoor", friction=0.0, damping=0.1, type="onr")
+        self.world.merge_assets(self.sliding_door)
+        self.world.worldbody.append(self.sliding_door.get_obj())
 
+        for contact in self.sliding_door.contact:
+            self.world.contact.append(contact)
+
+        for equality in self.sliding_door.equality:
+            self.world.equality.append(equality)
+
+
+    def _setup_table(self):
+        self.table = TableObject(name="ShipTable", table_type="square")
         self.world.merge_assets(self.table)
         self.world.worldbody.append(self.table.get_obj())
 
@@ -243,6 +252,11 @@ class ShipEnv(BaseEnv):
 
         for equality in self.table.equality:
             self.world.equality.append(equality)
+
+        self.socket = SocketObject(name="Socket")
+        self.world.merge_assets(self.socket)
+        self.world.worldbody.append(self.socket.get_obj())
+
 
     # def _setup_tray(self):
     #     self.tray = TrayObject(name="ShipTray")
@@ -259,8 +273,9 @@ class ShipEnv(BaseEnv):
     def _reset_robot(self, initial_pos=None):
         if initial_pos is None:
             initial_pos = {
-                "pos": [0.1, 2.75, 0.741],
-                "yaw": -1.5708
+                "pos": [-0.5, -0.75, 0.741],
+                # "pos": [-0.25, -1.3, 0.741],
+                "yaw": -1.4708
             }
         elif isinstance(initial_pos, list):
             initial_pos = {
@@ -281,6 +296,16 @@ class ShipEnv(BaseEnv):
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
                 self.sim.data.qpos[joint_qposadr] = 0.0
 
+        if hasattr(self, 'sliding_door'):
+            sliding_door_body_id = self.sim.model.body_name2id(self.sliding_door.root_body)
+            self.sim.model.body_pos[sliding_door_body_id] = np.array([-0.5, -1.8, 0])
+            self.sim.model.body_quat[sliding_door_body_id] = np.array([0.7071, 0.0, 0.0, -0.7071])
+            for joint in self.sliding_door.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([-0.5, -1.8, 0])
+                # self.sim.data.qpos[joint_qposadr+3:joint_qposadr+7] = np.array([0.7071, 0.0, 0.0, -0.7071])
+
         if hasattr(self, 'table'):
             table_body_id = self.sim.model.body_name2id(self.table.root_body)
             self.sim.model.body_pos[table_body_id] = np.array([0., 0., 0.0])
@@ -289,7 +314,18 @@ class ShipEnv(BaseEnv):
             for joint in self.table.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.0, 1.0, 0.0])
+                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.2, -1.5, 0.0])
+
+        if hasattr(self, 'socket'):
+            table_body_id = self.sim.model.body_name2id(self.socket.root_body)
+            self.sim.model.body_pos[table_body_id] = np.array([0.0, 0.0, 0.0])
+            self.sim.model.body_quat[table_body_id] = np.array([0.7071, 0.0, 0.0, 0.7071])
+
+            for joint in self.socket.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.0, -1.45, 0.8])
+
 
         # if hasattr(self, 'table') and hasattr(self, 'tray'):
         #     tray_body_id = self.sim.model.body_name2id(self.tray.root_body)

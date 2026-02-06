@@ -12,6 +12,7 @@ import mujoco_viewer
 from util import geom
 from simulator.envs import ShipEnv
 from simulator.recorder import HDF5Recorder
+from simulator import sim_util
 import time
 import argparse
 
@@ -86,6 +87,25 @@ def main(gui=1, save_video=False):
     right_pos = np.array([0.22, -0.25, 0.1])
     left_pos = np.array([0.22, 0.25, 0.1])
 
+    # Collect items locations in the environment
+    # -- socket on table
+    socket_id = env.sim.model.joint_name2id(env.socket.joints[0])
+    socket_qposadr = env.sim.model.jnt_qposadr[socket_id]
+    socket_pos_w = env.sim.data.qpos[socket_qposadr:socket_qposadr + 3]
+    # -- sliding door on wall
+    sliding_door_pos_w = env.sim.data.get_site_xpos('FuseDoor_handle') +  np.array([0.03, 0, 0])
+    sliding_release_door_pos_w = env.sim.data.get_site_xpos('FuseDoor_sliding_point')
+    # robot ids
+    left_grasping_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, env.robot.naming_prefix + "left_grasping_point"
+    )
+    right_grasping_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, env.robot.naming_prefix + "right_grasping_point"
+    )
+    base_id = mujoco.mj_name2id(
+        model, mujoco.mjtObj.mjOBJ_XBODY, env.robot.naming_prefix + "base"
+    )
+
     # Define different poses and actions
     poses = {
         'neutral': {
@@ -109,8 +129,8 @@ def main(gui=1, save_video=False):
         'pick_object': {
             'right_pos': np.array([0.4, -0.2, -0.2]),
             'left_pos': np.array([0.2, 0.2, 0.0]),
-            'right_rot': geom.euler_to_rot(np.array([-np.pi/2, 0, 0])),
-            'left_rot': geom.euler_to_rot(np.array([0, 0, 0]))
+            'right_rot': geom.euler_to_rot(np.array([0, 0, 0])),
+            'left_rot': geom.euler_to_rot(np.array([np.pi / 2, 0, 0]))
         },
         'squat': {
             'right_pos': np.array([0.22, -0.25, -0.6]),  # Much lower position
@@ -119,7 +139,6 @@ def main(gui=1, save_video=False):
             'left_rot': geom.euler_to_rot(np.array([0, 0, 0]))
         }
     }
-
     # Initialize state variables
     current_pose = poses['neutral']
     current_pose_name = 'neutral'
@@ -196,10 +215,36 @@ def main(gui=1, save_video=False):
             next_pose_name = 'squat'
             action_start_time = env.cur_time
             current_time = 0
+        elif '5' in pressed_keys:
+            current_pose = next_pose
+            current_pose_name = next_pose_name
+            next_pose = current_pose
+            data = env.sim.data
+            error_w = sliding_door_pos_w - data.xpos[base_id]
+            w_R_base = geom.quat_to_rot(data.xquat[base_id][[1, 2, 3, 0]])
+            next_pose['right_pos'] = w_R_base.T @ error_w
+            next_pose_name = 'reach_fuse_box'
+            action_start_time = env.cur_time
+            current_time = 0
+        elif '6' in pressed_keys:
+            current_pose = next_pose
+            current_pose_name = next_pose_name
+            next_pose = current_pose
+            data = env.sim.data
+            error_w = sliding_release_door_pos_w - data.xpos[base_id]
+            w_R_base = geom.quat_to_rot(data.xquat[base_id][[1, 2, 3, 0]])
+            next_pose['right_pos'] = w_R_base.T @ error_w
+            next_pose_name = 'reach_fuse_box'
+            action_start_time = env.cur_time
+            current_time = 0
         elif '9' in pressed_keys:
             current_pose = next_pose
             current_pose_name = next_pose_name
             next_pose = poses['pick_object']
+            data = env.sim.data
+            error_w = socket_pos_w - data.xpos[base_id]
+            w_R_base = geom.quat_to_rot(data.xquat[base_id][[1, 2, 3, 0]])
+            next_pose['left_pos'] = w_R_base.T @ error_w
             next_pose_name = 'pick_object'
             action_start_time = env.cur_time
             current_time = 0
@@ -295,6 +340,10 @@ def main(gui=1, save_video=False):
 
         obs = env.step(action)
         # print(obs)
+        # if next_pose_name == 'pick_object':
+        #     print(f"Error: {socket_pos_w - data.xpos[left_grasping_id]}")
+        # elif next_pose_name == 'reach_fuse_box':
+        #     print(f"Error: {sliding_door_pos_w - data.xpos[right_grasping_id]}")
 
         # Render if viewer is active
         if viewer and viewer.is_alive:
