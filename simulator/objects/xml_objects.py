@@ -22,8 +22,14 @@ class TableObject(MujocoXMLObject):
         lock (bool): Whether to use the locked door variation object or not
     """
 
-    def __init__(self, name):
-        xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "table.xml")
+    def __init__(self, name, table_type=None):
+        if table_type is None:
+            obj_path = "table.xml"
+        elif table_type == "square":
+            obj_path = "square_table.xml"
+        else:
+            raise ValueError("Table type {} not recognized".format(table_type))
+        xml_path = os.path.join(PATH_TO_OBJECT_MODELS, obj_path)
         super().__init__(
             xml_path_completion(xml_path),
             name=name,
