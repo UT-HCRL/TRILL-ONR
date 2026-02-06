@@ -1,5 +1,5 @@
 # Ignore data recorded by default
-data/pnc.pkl
+data/*
 
 # Ignore all __pycache__ directories at any level
 **/__pycache__/
