@@ -22,4 +22,4 @@ from .xml_objects import (
     PegboardObject,
     SocketObject,
 )
-from .shelf import ShelfObject
+# from .shelf import ShelfObject
