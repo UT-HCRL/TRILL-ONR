@@ -21,5 +21,7 @@ from .xml_objects import (
     CartObject,
     PegboardObject,
     SocketObject,
+    TrashCanObject,
+    PowerSwitchObject,
 )
 # from .shelf import ShelfObject

@@ -4,7 +4,7 @@ import os
 import util.geom
 from .base import BaseEnv
 from xml.etree.ElementTree import Element, SubElement
-from simulator.objects import DoorObject, TrayObject, SocketObject
+from simulator.objects import DoorObject, TrayObject, SocketObject, TrashCanObject, PowerSwitchObject
 from simulator.objects import TableObject
 
 class ShipEnv(BaseEnv):
@@ -257,6 +257,13 @@ class ShipEnv(BaseEnv):
         self.world.merge_assets(self.socket)
         self.world.worldbody.append(self.socket.get_obj())
 
+        self.trash_can = TrashCanObject(name="TrashCan")
+        self.world.merge_assets(self.trash_can)
+        self.world.worldbody.append(self.trash_can.get_obj())
+
+        self.power_switch = PowerSwitchObject(name="PowerSwitch")
+        self.world.merge_assets(self.power_switch)
+        self.world.worldbody.append(self.power_switch.get_obj())
 
     # def _setup_tray(self):
     #     self.tray = TrayObject(name="ShipTray")
@@ -326,6 +333,28 @@ class ShipEnv(BaseEnv):
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
                 self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.0, -1.45, 0.8])
 
+        if hasattr(self, 'trash_can'):
+            trash_can_body_id = self.sim.model.body_name2id(self.trash_can.root_body)
+            self.sim.model.body_pos[trash_can_body_id] = np.array([0.0, 0.0, 0.0])
+            self.sim.model.body_quat[trash_can_body_id] = np.array([0.7071, 0.0, 0.0, 0.7071])
+
+            for joint in self.trash_can.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr:joint_qposadr + 3] = np.array([-1.0, -1.65, 0.0])
+
+        # power_switch_body_id = self.sim.model.body_name2id(self.power_switch.root_body)
+        # self.sim.model.body_pos[power_switch_body_id] = np.array([-1.0, -1.65, 0.8])
+
+        if hasattr(self, 'power_switch'):
+            power_switch_body_id = self.sim.model.body_name2id(self.power_switch.root_body)
+            self.sim.model.body_pos[power_switch_body_id] = np.array([0.0, 0.0, 0.0])
+            self.sim.model.body_pos[power_switch_body_id] = np.array([-1.0, -1.78, 0.8])
+
+            for joint in self.power_switch.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr] = 0
 
         # if hasattr(self, 'table') and hasattr(self, 'tray'):
         #     tray_body_id = self.sim.model.body_name2id(self.tray.root_body)

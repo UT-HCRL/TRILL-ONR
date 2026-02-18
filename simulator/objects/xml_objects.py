@@ -227,6 +227,37 @@ class SocketObject(MujocoXMLObject):
         )
 
 
+class TrashCanObject(MujocoXMLObject):
+    """
+    Trash can object (used in PickPlace)
+    """
+
+    def __init__(self, name):
+        xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "trash_can.xml")
+        super().__init__(
+            xml_path_completion(xml_path),
+            name=name,
+            joints=[dict(type="free", damping="0.0005")],
+            obj_type="all",
+            duplicate_collision_geoms=False,
+        )
+
+
+class PowerSwitchObject(MujocoXMLObject):
+    """
+    Switch object (used in PickPlace)
+    """
+
+    def __init__(self, name):
+        xml_path = os.path.join(PATH_TO_OBJECT_MODELS, "power_switch.xml")
+        super().__init__(
+            xml_path_completion(xml_path),
+            name=name,
+            joints=None,
+            obj_type="all",
+            duplicate_collision_geoms=False,
+        )
+
 
 class TrayObject(MujocoXMLObject):
     """

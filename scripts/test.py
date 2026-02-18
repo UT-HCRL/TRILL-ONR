@@ -6,7 +6,7 @@ sys.path.append(cwd)
 
 import numpy as np
 from util import geom
-from simulator.envs import DoorEnv, EmptyEnv
+from simulator.envs import ONRDoorEnv, EmptyEnv
 from simulator.render import CV2Renderer
 from simulator.recorder import HDF5Recorder
 import time
@@ -18,7 +18,7 @@ TRANSFORM_VR = np.array(
 )  # geom.euler_to_rot(np.array([0, np.pi, 0]))
 
 ENV_LOOKUP = {
-    "door": DoorEnv,
+    "door": ONRDoorEnv,
 }
 
 
