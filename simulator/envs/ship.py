@@ -7,6 +7,45 @@ from xml.etree.ElementTree import Element, SubElement
 from simulator.objects import DoorObject, TrayObject, SocketObject, TrashCanObject, PowerSwitchObject
 from simulator.objects import TableObject
 
+
+MEAN_INIT_POS = {
+    -1: np.array([-0.5, -0.75, 0.741]),
+    0: np.array([-0.5, 0.0, 0.741]),
+    1: np.array([-0.7, -1.4, 0.741]),
+    2: np.array([0.06, -0.05, 0.741]),
+}
+STD_INIT_POS = {
+    -1: np.array([0.0, 0.0, 0.0]),
+    0: np.array([0.1, 0.2, 0.0]),
+    1: np.array([0.0, 0.0, 0.0]),
+    2: np.array([0.01, 0.02, 0.0]),
+}
+MEAN_INIT_YAW = {
+    -1: -1.4708,
+    0: 0.0,
+    1: -1.5708,
+    2: 0.0
+}
+STD_INIT_YAW = {
+    -1: 0.0,
+    0: 0.2,
+    1: 0.07,
+    2: 0.0
+}
+MEAN_INIT_HINGE = {
+    -1: 0.0,
+    0: 0.0,
+    1: 0.00,
+    2: 0.3
+}
+STD_INIT_HINGE = {
+    -1: 0.0,
+    0: 0.0,
+    1: 0.00,
+    2: 0.025
+}
+
+
 class ShipEnv(BaseEnv):
     def __init__(self):
         self.scene_scale = 0.022
@@ -21,7 +60,9 @@ class ShipEnv(BaseEnv):
         self._setup_scene()
         self._setup_lighting()
         self._setup_door()
+        self._setup_power_box()
         self._setup_table()
+        self._setup_others()
         # self._setup_tray()
 
     def _setup_default_classes(self):
@@ -231,16 +272,26 @@ class ShipEnv(BaseEnv):
         for equality in self.door.equality:
             self.world.equality.append(equality)
 
-        self.sliding_door = DoorObject(name="FuseDoor", friction=0.0, damping=0.1, type="onr")
-        self.world.merge_assets(self.sliding_door)
-        self.world.worldbody.append(self.sliding_door.get_obj())
+    def _setup_power_box(self):
+        self.fuse_door = DoorObject(name="FuseDoor", friction=0.0, damping=0.1, type="onr")
+        self.world.merge_assets(self.fuse_door)
+        self.world.worldbody.append(self.fuse_door.get_obj())
 
-        for contact in self.sliding_door.contact:
+        for contact in self.fuse_door.contact:
             self.world.contact.append(contact)
 
-        for equality in self.sliding_door.equality:
+        for equality in self.fuse_door.equality:
             self.world.equality.append(equality)
 
+        self.power_switch = PowerSwitchObject(name="PowerSwitch")
+        self.world.merge_assets(self.power_switch)
+        self.world.worldbody.append(self.power_switch.get_obj())
+
+        for contact in self.power_switch.contact:
+            self.world.contact.append(contact)
+
+        for equality in self.power_switch.equality:
+            self.world.equality.append(equality)
 
     def _setup_table(self):
         self.table = TableObject(name="ShipTable", table_type="square")
@@ -257,13 +308,13 @@ class ShipEnv(BaseEnv):
         self.world.merge_assets(self.socket)
         self.world.worldbody.append(self.socket.get_obj())
 
+
+    def _setup_others(self):
+
         self.trash_can = TrashCanObject(name="TrashCan")
         self.world.merge_assets(self.trash_can)
         self.world.worldbody.append(self.trash_can.get_obj())
 
-        self.power_switch = PowerSwitchObject(name="PowerSwitch")
-        self.world.merge_assets(self.power_switch)
-        self.world.worldbody.append(self.power_switch.get_obj())
 
     # def _setup_tray(self):
     #     self.tray = TrayObject(name="ShipTray")
@@ -277,20 +328,34 @@ class ShipEnv(BaseEnv):
     #     for equality in self.tray.equality:
     #         self.world.equality.append(equality)
 
-    def _reset_robot(self, initial_pos=None):
+    def reset(self, initial_pos=None, subtask=-1, **kwargs):
         if initial_pos is None:
-            initial_pos = {
-                "pos": [-0.5, -0.75, 0.741],
-                # "pos": [-0.25, -1.3, 0.741],
-                "yaw": -1.4708
+            self._init_robot_states = {
+                "pos": np.random.normal(
+                    MEAN_INIT_POS[subtask], STD_INIT_POS[subtask], size=3
+                ),
+                "yaw": np.random.normal(MEAN_INIT_YAW[subtask], STD_INIT_YAW[subtask]),
             }
-        elif isinstance(initial_pos, list):
-            initial_pos = {
-                "pos": initial_pos[:3],
-                "yaw": initial_pos[5]
-            }
-        
-        super()._reset_robot(initial_pos=initial_pos)
+        else:
+            self._init_robot_states = initial_pos
+        if subtask == 2:
+            self._slide_joint_random = np.max(
+                (
+                    np.random.normal(MEAN_INIT_HINGE[subtask], STD_INIT_HINGE[subtask]),
+                    0.08,
+                )
+            )
+        else:
+            self._slide_joint_random = 0
+
+        out = super().reset(
+            initial_pos=self._init_robot_states, subtask=subtask, **kwargs
+        )
+
+        self._success = False
+        self._success_time = None
+        return out
+    
 
     def _reset_objects(self):
         if hasattr(self, 'door'):
@@ -303,14 +368,14 @@ class ShipEnv(BaseEnv):
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
                 self.sim.data.qpos[joint_qposadr] = 0.0
 
-        if hasattr(self, 'sliding_door'):
-            sliding_door_body_id = self.sim.model.body_name2id(self.sliding_door.root_body)
-            self.sim.model.body_pos[sliding_door_body_id] = np.array([-0.5, -1.8, 0])
-            self.sim.model.body_quat[sliding_door_body_id] = np.array([0.7071, 0.0, 0.0, -0.7071])
-            for joint in self.sliding_door.joints:
+        if hasattr(self, 'fuse_door'):
+            fuse_door_body_id = self.sim.model.body_name2id(self.fuse_door.root_body)
+            self.sim.model.body_pos[fuse_door_body_id] = np.array([-0.5, -1.8, 0])
+            self.sim.model.body_quat[fuse_door_body_id] = np.array([0.7071, 0.0, 0.0, -0.7071])
+            for joint in self.fuse_door.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([-0.5, -1.8, 0])
+                # self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([-0.5, -1.8, 0])
                 # self.sim.data.qpos[joint_qposadr+3:joint_qposadr+7] = np.array([0.7071, 0.0, 0.0, -0.7071])
 
         if hasattr(self, 'table'):
@@ -341,15 +406,15 @@ class ShipEnv(BaseEnv):
             for joint in self.trash_can.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-                self.sim.data.qpos[joint_qposadr:joint_qposadr + 3] = np.array([-1.0, -1.65, 0.0])
+                self.sim.data.qpos[joint_qposadr:joint_qposadr + 3] = np.array([-1.0, -1.75, 0.0])
 
         # power_switch_body_id = self.sim.model.body_name2id(self.power_switch.root_body)
         # self.sim.model.body_pos[power_switch_body_id] = np.array([-1.0, -1.65, 0.8])
 
         if hasattr(self, 'power_switch'):
             power_switch_body_id = self.sim.model.body_name2id(self.power_switch.root_body)
-            self.sim.model.body_pos[power_switch_body_id] = np.array([0.0, 0.0, 0.0])
-            self.sim.model.body_pos[power_switch_body_id] = np.array([-1.0, -1.78, 0.8])
+            # self.sim.model.body_pos[power_switch_body_id] = np.array([0.0, 0.0, 0.0])
+            self.sim.model.body_pos[power_switch_body_id] = np.array([-1.0, -1.82, 0.8])
 
             for joint in self.power_switch.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
@@ -407,13 +472,27 @@ class ShipEnv(BaseEnv):
         return new_state == 1
 
     # Door-related methods
-    def _get_door_angle(self):
+    def _get_ship_door_angle(self):
         if hasattr(self, 'door'):
             joint = "ShipDoor_hinge"
             joint_id = self.sim.model.joint_name2id(joint)
             joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
             return np.copy(self.sim.data.qpos[joint_qposadr])
         return 0.0
+
+    def _get_fuse_door_angle(self):
+        joint = "FuseDoor_slide"
+        joint_id = self.sim.model.joint_name2id(joint)
+        joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+        value = np.copy(self.sim.data.qpos[joint_qposadr])
+        return value
+
+    def _get_socket_pos(self):
+        joint = "Socket_joint0"
+        joint_id = self.sim.model.joint_name2id(joint)
+        joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+        value = np.copy(self.sim.data.qpos[joint_qposadr:joint_qposadr + 3])
+        return value
 
     @property
     def door_angle(self):

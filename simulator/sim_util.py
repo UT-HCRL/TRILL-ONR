@@ -551,13 +551,6 @@ def transform_local_trajectory(sim, robot, global_trajectory):
     return trajectory_data
 
 
-            #   <body name="Door_handle" pos="-0.35 0 -0.1">
-              
-            #   <joint name="Door_hinge" pos="0.5 0 0" axis="0 0 -1" range="0.0 3.0" limited="true" damping="1" frictionloss="1" />
-            #     <joint name="Door_joint_handle" pos="0 0 0" axis="0 1 0" range="0 1.5708" limited="true" frictionloss="0.1" damping="0" stiffness="1.0" />
-            #     <site name="Door_handle" pos="0.125 -0.10 0" size="0.02" rgba="0 0 1 0" />
-
-
 def get_grasping_state(sim, robot, object):
 
     model, data = get_mujoco_objects(sim)

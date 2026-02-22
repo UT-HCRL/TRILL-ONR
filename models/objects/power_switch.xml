@@ -47,10 +47,10 @@
                  axis="1 0 0"
                  limited="true"
                  range="-1 1"
-                 damping="3.0"
+                 damping="1.0"
                  frictionloss="0.08"
                  armature="0.0012"
-                 ref="0"/>
+                 ref="-0.5"/>
 
           <inertial pos="0 0 0.02" mass="0.1"
                     diaginertia="0.00016 0.00016 0.00024"/>
@@ -60,23 +60,37 @@
                 material="MatMetal" group="1" contype="0" conaffinity="0"/>
 
           <geom name="lever_handle_vis"
-                type="capsule" pos="0 0.024 0" size="0.006 0.024"
+                type="capsule" pos="0 0.024 0" size="0.006 0.04"
                 quat="0.70710678 0.70710678 0 0"
                 material="MatMetal" group="1" contype="0" conaffinity="0"/>
 
           <geom name="lever_knob_vis"
-                type="cylinder" pos="0 0.052 0" size="0.011 0.012"
-                quat="0.70710678 0.70710678 0 0"
+                type="cylinder" pos="0 0.08 0" size="0.015 0.03"
+                quat="0.5 0.5 0.5 0.5"
                 material="MatPlasticDark" group="1" contype="0" conaffinity="0"/>
 
           <geom name="lever_col"
-                type="capsule" pos="0 0.024 0" size="0.0072 0.026"
+                type="capsule" pos="0 0.024 0" size="0.0072 0.04"
                 quat="0.70710678 0.70710678 0 0"
                 rgba="0 0 0 0" group="0"
                 friction="0.9 0.02 0.0005"/>
 
+          <geom name="lever_knob_col"
+                type="cylinder" pos="0 0.08 0" size="0.015 0.03"
+                quat="0.5 0.5 0.5 0.5"
+                material="MatPlasticDark" group="1" contype="0" conaffinity="0"/>
+
           <site name="lever_tip_site" pos="0 0.052 0" size="0.008" rgba="0 0 0 0"/>
         </body>
+
+        <body name="grasping_point" pos="-0.028 0.11 0.12"/>
+        <site name="grasping_point" pos="-0.028 0.11 0.12" size="0.025" rgba="0 0 1 0" />
+
+        <body name="sliding_point" pos="-0.028 0.11 0.06"/>
+        <site name="sliding_point" pos="-0.028 0.11 0.06" size="0.025" rgba="0 1 0 0" />
+
+        <body name="releasing_point" pos="-0.028 0.15 0.06"/>
+        <site name="releasing_point" pos="-0.028 0.15 0.06" size="0.025" rgba="0 1 0 0" />
 
         <!-- Optional mount sites -->
         <site name="bottom_site" pos="0 0 0" size="0.01" rgba="0 0 0 0"/>
