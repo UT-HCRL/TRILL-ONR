@@ -132,6 +132,9 @@
           />
 
       </body>
+      <body name="socket_point" pos="0.0 0.0 0.7"/>
+      <body name="releasing_point" pos="0.0 0.0 0.7"/>
+
       <site name="bottom_site" pos="0 0 -0.0207" rgba="0 0 0 0" size="0.005"/>
       <site name="top_site" pos="0 0 0.007" rgba="0 0 0 0" size="0.005"/>
       <site name="horizontal_radius_site" pos="0 0 0" rgba="0 0 0 0" size="0.003"/>

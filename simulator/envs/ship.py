@@ -12,37 +12,49 @@ MEAN_INIT_POS = {
     -1: np.array([-0.5, -0.75, 0.741]),
     0: np.array([-0.5, 0.0, 0.741]),
     1: np.array([-0.7, -1.4, 0.741]),
-    2: np.array([0.06, -0.05, 0.741]),
+    2: np.array([-0.6, -1.5, 0.741]),
 }
 STD_INIT_POS = {
     -1: np.array([0.0, 0.0, 0.0]),
     0: np.array([0.1, 0.2, 0.0]),
     1: np.array([0.0, 0.0, 0.0]),
-    2: np.array([0.01, 0.02, 0.0]),
+    2: np.array([0.0, 0.0, 0.0]),
 }
 MEAN_INIT_YAW = {
     -1: -1.4708,
     0: 0.0,
     1: -1.5708,
-    2: 0.0
+    2: -1.5708,
 }
 STD_INIT_YAW = {
     -1: 0.0,
     0: 0.2,
-    1: 0.07,
-    2: 0.0
+    1: 0.0,
+    2: 0.0,
 }
-MEAN_INIT_HINGE = {
+MEAN_INIT_SLIDE = {
     -1: 0.0,
     0: 0.0,
-    1: 0.00,
+    1: 0.0,
     2: 0.3
 }
-STD_INIT_HINGE = {
+STD_INIT_SLIDE = {
     -1: 0.0,
     0: 0.0,
-    1: 0.00,
-    2: 0.025
+    1: 0.0,
+    2: 0.0
+}
+MEAN_INIT_LEVER = {
+    -1: 0.0,
+    0: 0.0,
+    1: 0.0,
+    2: -1.0
+}
+STD_INIT_LEVER = {
+    -1: 0.0,
+    0: 0.0,
+    1: 0.0,
+    2: 0.0
 }
 
 
@@ -308,6 +320,10 @@ class ShipEnv(BaseEnv):
         self.world.merge_assets(self.socket)
         self.world.worldbody.append(self.socket.get_obj())
 
+        self.used_socket = SocketObject(name="UsedSocket")
+        self.world.merge_assets(self.used_socket)
+        self.world.worldbody.append(self.used_socket.get_obj())
+
 
     def _setup_others(self):
 
@@ -316,19 +332,8 @@ class ShipEnv(BaseEnv):
         self.world.worldbody.append(self.trash_can.get_obj())
 
 
-    # def _setup_tray(self):
-    #     self.tray = TrayObject(name="ShipTray")
-    #
-    #     self.world.merge_assets(self.tray)
-    #     self.world.worldbody.append(self.tray.get_obj())
-    #
-    #     for contact in self.tray.contact:
-    #         self.world.contact.append(contact)
-    #
-    #     for equality in self.tray.equality:
-    #         self.world.equality.append(equality)
-
     def reset(self, initial_pos=None, subtask=-1, **kwargs):
+        print("subtask", subtask)
         if initial_pos is None:
             self._init_robot_states = {
                 "pos": np.random.normal(
@@ -338,15 +343,10 @@ class ShipEnv(BaseEnv):
             }
         else:
             self._init_robot_states = initial_pos
-        if subtask == 2:
-            self._slide_joint_random = np.max(
-                (
-                    np.random.normal(MEAN_INIT_HINGE[subtask], STD_INIT_HINGE[subtask]),
-                    0.08,
-                )
-            )
-        else:
-            self._slide_joint_random = 0
+
+        self._slide_joint = np.random.normal(MEAN_INIT_SLIDE[subtask], STD_INIT_SLIDE[subtask])
+        self._lever_joint = np.random.normal(MEAN_INIT_LEVER[subtask], STD_INIT_LEVER[subtask])
+        
 
         out = super().reset(
             initial_pos=self._init_robot_states, subtask=subtask, **kwargs
@@ -375,6 +375,7 @@ class ShipEnv(BaseEnv):
             for joint in self.fuse_door.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr] = self._slide_joint
                 # self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([-0.5, -1.8, 0])
                 # self.sim.data.qpos[joint_qposadr+3:joint_qposadr+7] = np.array([0.7071, 0.0, 0.0, -0.7071])
 
@@ -387,6 +388,16 @@ class ShipEnv(BaseEnv):
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
                 self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([0.2, -1.5, 0.0])
+
+        if hasattr(self, 'used_socket'):
+            table_body_id = self.sim.model.body_name2id(self.used_socket.root_body)
+            self.sim.model.body_pos[table_body_id] = np.array([0.0, 0.0, 0.0])
+            self.sim.model.body_quat[table_body_id] = np.array([0.7071, 0.0, 0.0, 0.7071])
+
+            for joint in self.used_socket.joints:
+                joint_id = self.sim.model.joint_name2id(joint)
+                joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
+                self.sim.data.qpos[joint_qposadr:joint_qposadr+3] = np.array([-0.35, -2.0, 0.90])
 
         if hasattr(self, 'socket'):
             table_body_id = self.sim.model.body_name2id(self.socket.root_body)
@@ -419,7 +430,7 @@ class ShipEnv(BaseEnv):
             for joint in self.power_switch.joints:
                 joint_id = self.sim.model.joint_name2id(joint)
                 joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-                self.sim.data.qpos[joint_qposadr] = 0
+                self.sim.data.qpos[joint_qposadr] = self._lever_joint
 
         # if hasattr(self, 'table') and hasattr(self, 'tray'):
         #     tray_body_id = self.sim.model.body_name2id(self.tray.root_body)
@@ -435,29 +446,6 @@ class ShipEnv(BaseEnv):
     def _check_success(self):
         self._success = False 
 
-    # Robot movement methods
-    # def walk_forward(self):
-    #     self.controller.update_trajectory({}, locomotion="walk_forward")
-
-    # def walk_backward(self):
-    #     self.controller.update_trajectory({}, locomotion="walk_backward")
-
-    # def strafe_left(self):
-    #     self.controller.update_trajectory({}, locomotion="sidewalk_left")
-
-    # def strafe_right(self):
-    #     self.controller.update_trajectory({}, locomotion="sidewalk_right")
-
-    # def turn_left(self):
-    #     self.controller.update_trajectory({}, locomotion="turning_left")
-
-    # def turn_right(self):
-    #     self.controller.update_trajectory({}, locomotion="turning_right")
-
-    # def balance(self):
-    #     self.controller.update_trajectory({}, locomotion="balance")
-    #     self.controller.update_trajectory({}, locomotion="balance")
-
     # Collision visibility methods
     def show_all_colliders(self):
         self.sim.model.vis.flags[3:6] = 1
@@ -470,30 +458,3 @@ class ShipEnv(BaseEnv):
         self.sim.model.vis.flags[3:6] = new_state
         self.sim.forward()
         return new_state == 1
-
-    # Door-related methods
-    def _get_ship_door_angle(self):
-        if hasattr(self, 'door'):
-            joint = "ShipDoor_hinge"
-            joint_id = self.sim.model.joint_name2id(joint)
-            joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-            return np.copy(self.sim.data.qpos[joint_qposadr])
-        return 0.0
-
-    def _get_fuse_door_angle(self):
-        joint = "FuseDoor_slide"
-        joint_id = self.sim.model.joint_name2id(joint)
-        joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-        value = np.copy(self.sim.data.qpos[joint_qposadr])
-        return value
-
-    def _get_socket_pos(self):
-        joint = "Socket_joint0"
-        joint_id = self.sim.model.joint_name2id(joint)
-        joint_qposadr = self.sim.model.jnt_qposadr[joint_id]
-        value = np.copy(self.sim.data.qpos[joint_qposadr:joint_qposadr + 3])
-        return value
-
-    @property
-    def door_angle(self):
-        return self._get_door_angle() 

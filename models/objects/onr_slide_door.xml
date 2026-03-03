@@ -27,8 +27,8 @@
               <body name="shelf" pos="-0.15 0.25 -0.1" quat="0 0 0 1">
                 <geom type="box" size="0.1 0.1 0.02" pos="0 0 -0.13" material="MatBright" group="0" />
                 <geom type="box" size="0.1 0.1 0.02" pos="0 0 0.13" material="MatBright" group="0" />
-                <geom type="box" size="0.02 0.1 0.15" pos="-0.08 0 0" material="MatBright" group="0" />
-                <geom type="box" size="0.02 0.1 0.15" pos="0.08 0 0" material="MatBright" group="0" />
+                <!-- <geom type="box" size="0.02 0.1 0.15" pos="-0.08 0 0" material="MatDark" group="0" />
+                <geom type="box" size="0.02 0.1 0.15" pos="0.08 0 0" material="MatDark" group="0" /> -->
                 <geom type="box" size="0.06 0.02 0.11" pos="0 -0.08 0" material="MatBright" group="0" />
 
                 <body name="socket_point" pos="0.0 -0.0 0.0"/>
